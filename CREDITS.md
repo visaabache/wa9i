@@ -2,7 +2,7 @@
 
 The photos in `assets/photos/` come from [Unsplash](https://unsplash.com) under the [Unsplash License](https://unsplash.com/license), which allows commercial use without permission or credit. They're listed on the shop's `#/credits` page too.
 
-Photos were picked without visible brand logos. The phone-case pictures on product cards and in the first banner are Wa9i's own SVG drawings (`caseSVG()` in `app.js`).
+Photos were picked without visible brand logos, except the brand tiles (`brand-*.webp`), which show each brand's own phone so visitors recognise their model. The phone-case pictures on product cards and in the first banner are Wa9i's own SVG drawings (`caseSVG()` in `app.js`).
 
 | File | Original |
 | --- | --- |
@@ -18,6 +18,14 @@ Photos were picked without visible brand logos. The phone-case pictures on produ
 | `assets/photos/maroc-fountain.webp` | [Unsplash](https://images.unsplash.com/photo-1539020140153-e479b8c22e70) |
 | `assets/photos/maroc-souk.webp` | [Unsplash](https://images.unsplash.com/photo-1580746738099-1cb74f972feb) |
 | `assets/photos/contact-cases.webp` | [Unsplash](https://images.unsplash.com/photo-1535157412991-2ef801c1748b) |
+| `assets/photos/brand-iphone.webp` | [Unsplash](https://images.unsplash.com/photo-1763891378295-5d9bd5c48745) |
+| `assets/photos/brand-samsung.webp` | [Unsplash](https://images.unsplash.com/photo-1772182092777-6b1bf0a362fe) |
+| `assets/photos/brand-xiaomi.webp` | [Unsplash](https://images.unsplash.com/photo-1655356392708-c675781f1748) |
+| `assets/photos/brand-google.webp` | [Unsplash](https://images.unsplash.com/photo-1760597371617-5c0652f58178) |
+| `assets/photos/brand-huawei.webp` | [Unsplash](https://images.unsplash.com/photo-1546706887-a24528987a75) |
+| `assets/photos/brand-oppo.webp` | [Unsplash](https://images.unsplash.com/photo-1779002999469-8f0a40b588c4) |
+| `assets/photos/brand-honor.webp` | [Unsplash](https://images.unsplash.com/photo-1760708368766-1d36cd72591e) |
+| `assets/photos/brand-infinix.webp` | [Unsplash](https://images.unsplash.com/photo-1696877983046-7429e0a6a8f5) |
 | `tools/mockup-base.jpg` (base of every `assets/mockups/*.webp`) | [Unsplash](https://images.unsplash.com/photo-1760443728263-e77345f61eb8) |
 
 The product mockups in `assets/mockups/` are that photo with the Wa9i designs printed onto the case by `tools/make-mockups.py`.
