@@ -174,7 +174,7 @@
     if (p.pattern === "star") {
       body = `<rect x="6" y="6" width="${W - 12}" height="${H - 12}" rx="38" fill="${c}"/>`;
       const sc = c === "#b91c1c" ? "#0e7a5f" : "#b91c1c";
-      extra = `<g transform="translate(100 236)"><path d="M0-58L13.6 18.8-35.6-28.4H35.6L-13.6 18.8z" transform="rotate(180) scale(1.05)" fill="none" stroke="${sc}" stroke-width="7" stroke-linejoin="round"/></g><text x="100" y="352" text-anchor="middle" font-family="Tajawal, sans-serif" font-weight="800" font-size="30" fill="#f6efe2" opacity=".9">المغرب</text>`;
+      extra = `<g transform="translate(100 236)"><path d="M0.0 -54.0 L31.7 43.7 L-51.4 -16.7 L51.4 -16.7 L-31.7 43.7Z" fill="none" stroke="${sc}" stroke-width="7" stroke-linejoin="miter"/></g><text x="100" y="352" text-anchor="middle" font-family="Tajawal, sans-serif" font-weight="800" font-size="30" fill="#f6efe2" opacity=".9">المغرب</text>`;
     }
     if (p.pattern === "leather" || p.pattern === "wallet") {
       extra += `<rect x="6" y="6" width="${W - 12}" height="${H - 12}" rx="38" fill="${c}" filter="url(#${id}n)"/><rect x="16" y="16" width="${W - 32}" height="${H - 32}" rx="30" fill="none" stroke="${shade(c, .3)}" stroke-width="1.6" stroke-dasharray="5 4"/>`;
@@ -206,6 +206,16 @@
       default: return s(`<rect x="60" y="40" width="80" height="80" rx="40" fill="${c}"/><circle cx="100" cy="80" r="22" fill="none" stroke="#94a3b8" stroke-width="5"/><rect x="92" y="118" width="16" height="50" fill="${c}"/><rect x="60" y="166" width="80" height="22" rx="8" fill="${c}"/><path d="M70 188l-8 30M130 188l8 30" stroke="${c}" stroke-width="8" stroke-linecap="round"/>`);
     }
   }
+
+  // Photo mockups (tools/make-mockups.py): iPhone products get a real case photo with the design printed on it.
+  const hasMockup = (p) => p && p.brand === "iphone" && !p.accessory;
+  function productArt(p, color, opts = {}) {
+    if (!hasMockup(p) || opts.drawing) return caseSVG(p, color);
+    const i = Math.max(0, p.colors.indexOf(color || p.colors[0]));
+    return `<img class="mock" src="/assets/mockups/${p.design}-${i}.webp" alt="${esc(productTitle(p))}" width="486" height="540" loading="${opts.eager ? "eager" : "lazy"}" decoding="async">`;
+  }
+  // Used by tools/make-mockups.mjs to draw each design before printing it on the case photo.
+  self.WA9I_ART = { caseSVG: (id, color) => (byId[id] ? caseSVG(byId[id], color) : "") };
 
   /* ---------- Cart ---------- */
   let cart = store.get("cart", []).filter((l) => byId[l.id]);
@@ -245,7 +255,7 @@
     return `<article class="card">
       <a class="card-img" href="#/p/${p.id}" tabindex="-1" aria-hidden="true">
         ${p.badge ? `<span class="badge">${esc(L(p.badge))}</span>` : ""}<span class="badge off">-${off}%</span>
-        ${caseSVG(p)}
+        ${productArt(p)}
       </a>
       <div class="card-body">
         <span class="card-model">${esc(p.model || t("accessories"))}</span>
@@ -418,8 +428,8 @@
     return { html: `<div class="wrap">${crumbs(p.model ? [[`#/c/${p.brand}`, brandName(p.brand)], [`#/c/${p.brand}/${p.modelSlug}`, p.model], [null, L(p.name)]] : [[`#/c/accessoires`, t("accessories")], [null, L(p.name)]])}
       <div class="pdp">
         <div class="gallery">
-          <div class="g-main" id="gMain">${caseSVG(p, color)}</div>
-          ${p.accessory ? "" : `<div class="g-thumbs" id="gThumbs">${[0, 1].map((i) => `<button type="button" aria-pressed="${i === 0}" data-view="${i}" aria-label="Vue ${i + 1}">${caseSVG(p, color)}</button>`).join("")}</div>`}
+          <div class="g-main${hasMockup(p) ? " has-photo" : ""}" id="gMain">${productArt(p, color, { eager: true })}</div>
+          ${p.accessory ? "" : `<div class="g-thumbs" id="gThumbs">${[0, 1].map((i) => `<button type="button" aria-pressed="${i === 0}" data-view="${i}" aria-label="Vue ${i + 1}">${i === 0 ? productArt(p, color) : caseSVG(p, color)}</button>`).join("")}</div>`}
         </div>
         <div class="pdp-info">
           <span class="card-model">${esc(p.model || t("accessories"))}</span>
@@ -452,8 +462,10 @@
       after() {
         const main = $("#gMain"), qtyEl = $("#qty");
         const paint = () => {
-          main.innerHTML = caseSVG(p, color); main.classList.toggle("side-v", view === 1);
-          $$("#gThumbs button").forEach((b2, i) => { b2.innerHTML = caseSVG(p, color); b2.setAttribute("aria-pressed", i === view); });
+          const photo = hasMockup(p) && view === 0;
+          main.innerHTML = photo ? productArt(p, color, { eager: true }) : caseSVG(p, color);
+          main.classList.toggle("has-photo", photo); main.classList.toggle("side-v", view === 1 && !hasMockup(p));
+          $$("#gThumbs button").forEach((b2, i) => { b2.innerHTML = i === 0 ? productArt(p, color) : caseSVG(p, color); b2.setAttribute("aria-pressed", i === view); });
         };
         const qty = () => Math.max(1, Math.min(20, parseInt(qtyEl.value, 10) || 1));
         const sum = () => { const q = qty(); const ship = shippingCost(q); $("#codTotal").textContent = money(p.price * q + ship); $("#codShip").textContent = `(${t("shipping")} : ${ship ? money(ship) : t("free")})`; };
@@ -486,7 +498,7 @@
     });
   }
   const lineHTML = (l, i) => { const p = byId[l.id]; return `<div class="line">
-    <a class="line-img" href="#/p/${p.id}" aria-hidden="true" tabindex="-1">${caseSVG(p, l.color)}</a>
+    <a class="line-img" href="#/p/${p.id}" aria-hidden="true" tabindex="-1">${productArt(p, l.color)}</a>
     <div><a class="line-t" href="#/p/${p.id}">${esc(L(p.name))}<small>${esc(p.model || t("accessories"))} · <i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${l.color};vertical-align:middle;border:1px solid #0002"></i></small></a><br><button type="button" class="rm" data-rm="${i}">${t("remove")}</button></div>
     <div class="qty"><button type="button" data-lq="${i}" data-d="-1" aria-label="-">−</button><input value="${l.qty}" readonly aria-label="${t("qty")}"><button type="button" data-lq="${i}" data-d="1" aria-label="+">+</button></div>
     <span class="line-p">${money(p.price * l.qty)}</span></div>`; };
@@ -506,7 +518,7 @@
         <div class="pay">${ICON.cash}<p style="margin:0"><b>${t("payCod")}</b><span>${t("payCodS")}</span></p></div>
         <button class="btn btn-primary btn-block" type="submit">${t("orderBtn")} · ${money(cartSub() + shippingCost(cartCount()))}</button>
       </form>
-      <div>${totalsBox(false)}<div class="lines" style="margin-top:14px">${cart.map((l) => { const p = byId[l.id]; return `<div class="mini" style="padding:10px 14px"><span class="line-img">${caseSVG(p, l.color)}</span><span class="mini-t">${l.qty} × ${esc(L(p.name))}<small>${esc(p.model || t("accessories"))}</small></span><span class="mini-p">${money(p.price * l.qty)}</span></div>`; }).join("")}</div></div>
+      <div>${totalsBox(false)}<div class="lines" style="margin-top:14px">${cart.map((l) => { const p = byId[l.id]; return `<div class="mini" style="padding:10px 14px"><span class="line-img">${productArt(p, l.color)}</span><span class="mini-t">${l.qty} × ${esc(L(p.name))}<small>${esc(p.model || t("accessories"))}</small></span><span class="mini-p">${money(p.price * l.qty)}</span></div>`; }).join("")}</div></div>
       </div></div>`,
       after() { bindCoupon(); $("#coForm").addEventListener("submit", (e) => { e.preventDefault(); placeOrder(e.target, cart); }); } };
   };
@@ -590,7 +602,7 @@
     else {
       const items = cartCount(), left = Math.max(0, CONFIG.freeShippingFrom - items);
       body.innerHTML = `<div class="progress">${left ? t("freeLeft", { n: left }) : `<span class="free">${t("freeYes")}</span>`}<div class="bar"><i style="width:${Math.min(100, (items / CONFIG.freeShippingFrom) * 100)}%"></i></div></div>`
-        + cart.map((l, i) => { const p = byId[l.id]; return `<div class="mini"><span class="line-img">${caseSVG(p, l.color)}</span><span class="mini-t">${esc(L(p.name))}<small>${esc(p.model || t("accessories"))} · ${l.qty} × ${money(p.price)}</small><button type="button" class="rm" data-rm="${i}">${t("remove")}</button></span><span class="mini-p">${money(p.price * l.qty)}</span></div>`; }).join("")
+        + cart.map((l, i) => { const p = byId[l.id]; return `<div class="mini"><span class="line-img">${productArt(p, l.color)}</span><span class="mini-t">${esc(L(p.name))}<small>${esc(p.model || t("accessories"))} · ${l.qty} × ${money(p.price)}</small><button type="button" class="rm" data-rm="${i}">${t("remove")}</button></span><span class="mini-p">${money(p.price * l.qty)}</span></div>`; }).join("")
         + `<div class="drawer-foot" style="margin:16px -16px -16px"><div class="trow"><span>${t("subtotal")}</span><span>${money(cartSub())}</span></div><a class="btn btn-ghost" href="#/panier" data-closer>${t("viewCart")}</a><a class="btn btn-primary" href="#/commande" data-closer>${t("checkout")}</a></div>`;
       $$("[data-rm]", body).forEach((b) => b.addEventListener("click", () => { cart.splice(+b.dataset.rm, 1); saveCart(); if (/panier|commande/.test(location.hash)) render(); }));
     }

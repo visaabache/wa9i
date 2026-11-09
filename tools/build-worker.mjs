@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
 import { createHash } from "node:crypto";
 const TYPES = { html: "text/html; charset=utf-8", css: "text/css; charset=utf-8", js: "text/javascript; charset=utf-8", svg: "image/svg+xml", png: "image/png", webp: "image/webp" };
 const files = ["index.html", "styles.css", "app.js", "catalog.js", "admin/index.html", "admin/admin.css", "admin/admin.js"];
+for (const f of readdirSync("assets/mockups")) if (f.endsWith(".webp")) files.push("assets/mockups/" + f);
 for (const f of readdirSync("assets/photos")) if (f.endsWith(".webp")) files.push("assets/photos/" + f);
 for (const f of readdirSync("assets/logo")) if (/^wa9i-maroc-.*\.svg$/.test(f) || /^wa9i-maroc-(icon-512)\.png$/.test(f)) files.push("assets/logo/" + f);
 // Cache busting: HTML links to CSS/JS get ?v=<hash of that file>, so browsers load the new code after each deploy.

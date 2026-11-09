@@ -26,6 +26,14 @@ The first password is the `ADMIN_PASSWORD` secret (`npx wrangler secret put ADMI
 ## Photos
 The banners, collection tiles, the "Inspiré du Maroc" section and the contact banner use 12 photos from Unsplash (free for commercial use, picked without visible brand logos). They're in `assets/photos/` as WebP, listed in `CREDITS.md` and on the shop's `#/credits` page.
 
+## Product mockups
+iPhone products show a real photo: a phone in a case (an Unsplash photo, `tools/mockup-base.jpg`) with each Wa9i design printed onto the case. The photo's light, shadows, camera and edges are kept. That's 27 images, one per design and colour, in `assets/mockups/`. The product page shows the photo first and the design drawing as the second view; other brands keep the drawings. To remake them after changing a design:
+```bash
+python3 -m http.server 8090 &
+node tools/render-designs.mjs http://127.0.0.1:8090 dist/designs
+python3 tools/make-mockups.py dist/designs assets/mockups
+```
+
 ## Customise
 - **Products, brands, models, base prices, colour names:** `catalog.js` (shared by the shop and the server). Prices and stock can also be changed in the admin.
 - **Text (FR / AR):** the `T` object in `app.js` (shop) and `admin/admin.js` (admin).

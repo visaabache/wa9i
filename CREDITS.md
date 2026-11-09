@@ -18,3 +18,6 @@ Photos were picked without visible brand logos. The phone-case pictures on produ
 | `assets/photos/maroc-fountain.webp` | [Unsplash](https://images.unsplash.com/photo-1539020140153-e479b8c22e70) |
 | `assets/photos/maroc-souk.webp` | [Unsplash](https://images.unsplash.com/photo-1580746738099-1cb74f972feb) |
 | `assets/photos/contact-cases.webp` | [Unsplash](https://images.unsplash.com/photo-1535157412991-2ef801c1748b) |
+| `tools/mockup-base.jpg` (base of every `assets/mockups/*.webp`) | [Unsplash](https://images.unsplash.com/photo-1760443728263-e77345f61eb8) |
+
+The product mockups in `assets/mockups/` are that photo with the Wa9i designs printed onto the case by `tools/make-mockups.py`.
