@@ -329,7 +329,8 @@ function serveFile(req, url) {
   if (!f) return null;
   const body = f.b64 ? Uint8Array.from(atob(f.body), (c) => c.charCodeAt(0)) : f.body;
   const isHtml = f.type.startsWith("text/html");
-  const headers = { "Content-Type": f.type, "Cache-Control": isHtml ? "no-cache" : "public, max-age=3600", ...SEC };
+  const versioned = url.searchParams.has("v");
+  const headers = { "Content-Type": f.type, "Cache-Control": isHtml ? "no-cache" : versioned ? "public, max-age=31536000, immutable" : "no-cache", ...SEC };
   if (p.startsWith("/admin/")) headers["X-Robots-Tag"] = "noindex, nofollow";
   return new Response(req.method === "HEAD" ? null : body, { headers });
 }
