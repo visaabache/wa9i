@@ -1,6 +1,6 @@
 # Wa9i · واقي — demo phone-case shop
 
-A demo online shop for a fictional Moroccan phone-case brand, made by [AbacheDev](https://abachedev.com). Plain HTML, CSS and JavaScript: no build step, no dependencies, no backend.
+An online shop for a fictional Moroccan phone-case brand, with a seller admin, made by [AbacheDev](https://abachedev.com). Plain JavaScript, no framework: one Cloudflare Worker with KV storage.
 
 ## Features
 - **Catalogue by brand → model**: iPhone, Samsung, Xiaomi, Huawei, Oppo, Honor, Google, Infinix and accessories, with a mega menu, a mobile drawer, a filter sidebar, model chips, sorting, search and "show more".
