@@ -30,3 +30,16 @@ Settings → Pages → Source: **Deploy from a branch**, branch `main`, folder `
 
 ---
 Demo site: fictional brand, no real orders.
+
+## Logo (`assets/logo/`)
+The mark is a phone case shaped like a Moroccan horseshoe arch. An 8-point star frames the camera lens, small Amazigh diamonds sit below it, and stitching runs round the edge. Colours: emerald `#0e7a5f`, saffron gold `#f2b33d`, ink `#0c1f1a`. The text is converted to outlines, so the logos look the same on every device without the fonts (Outfit and Tajawal, both under the SIL Open Font License).
+
+| File | Use |
+| --- | --- |
+| `wa9i-logo.svg` / `.png` | Main logo: mark, name and tagline, on light backgrounds |
+| `wa9i-logo-dark.svg` / `.png` | Main logo on a dark background |
+| `wa9i-logo-stacked.svg` / `.png` | Centred version: posters, packaging, stickers |
+| `wa9i-mark.svg` / `.png` | The mark on its own: favicon, watermark on product photos |
+| `wa9i-mark-gold.svg` | Gold version of the mark |
+| `wa9i-icon.svg`, `wa9i-icon-512.png`, `wa9i-icon-1024.png` | App icon |
+| `wa9i-profile-1080.png` | Instagram, Facebook, TikTok and WhatsApp profile picture (fits the circle crop) |
