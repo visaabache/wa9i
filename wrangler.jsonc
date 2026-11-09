@@ -1,0 +1,9 @@
+// Cloudflare Worker for the Wa9i demo shop.
+// The site (index.html, styles.css, app.js) is bundled into dist/worker.js by tools/build-worker.mjs.
+// Deploy: node tools/build-worker.mjs && CLOUDFLARE_ACCOUNT_ID=<id> npx wrangler deploy
+{
+  "name": "wa9i",
+  "main": "dist/worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true
+}
