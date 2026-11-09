@@ -46,3 +46,6 @@ The mark is a phone case shaped like a Moroccan horseshoe arch. An 8-point star 
 
 ### Africa mosaic version (`wa9i-afrique-*`)
 A second logo: a black phone case with the map of Africa filled with a mosaic of Moroccan patterns (zellige stars, Amazigh diamonds, rug stripes, dots) in emerald, saffron, terracotta, majorelle blue and cream. A gold star marks Morocco. Files: `wa9i-afrique-mark`, `-logo`, `-logo-dark`, `-logo-stacked` and `-icon` (SVG + PNG), `wa9i-afrique-icon-1024.png` and `wa9i-afrique-profile-1080.png`.
+
+### Maroc version (`wa9i-maroc-*`)
+A third logo in Morocco's colours: a red case with a tone-on-tone zellige pattern, a vertical green stripe with gold edges, and a round Wa9i badge carrying the green star from the flag. It's an original badge, not the football federation's crest, which is a protected emblem. Files: `wa9i-maroc-mark`, `-logo`, `-logo-dark`, `-logo-stacked` and `-icon` (SVG + PNG), `wa9i-maroc-icon-1024.png` and `wa9i-maroc-profile-1080.png`.
