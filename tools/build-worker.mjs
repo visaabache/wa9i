@@ -1,24 +1,14 @@
-// Bundles index.html, styles.css and app.js into one Worker script (dist/worker.js),
-// so the site deploys as a single Worker without a separate static-asset upload.
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
-const files = {
-  "/": ["index.html", "text/html; charset=utf-8"],
-  "/styles.css": ["styles.css", "text/css; charset=utf-8"],
-  "/app.js": ["app.js", "text/javascript; charset=utf-8"],
-};
-const site = Object.fromEntries(Object.entries(files).map(([p, [f, type]]) => [p, { type, body: readFileSync(f, "utf8") }]));
+// Bundles the shop, the admin and the logo files into dist/site.js, which src/worker.js serves.
+// (One Worker script, no separate static-asset upload.)
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
+const TYPES = { html: "text/html; charset=utf-8", css: "text/css; charset=utf-8", js: "text/javascript; charset=utf-8", svg: "image/svg+xml", png: "image/png" };
+const files = ["index.html", "styles.css", "app.js", "catalog.js", "admin/index.html", "admin/admin.css", "admin/admin.js"];
+for (const f of readdirSync("assets/logo")) if (/^wa9i-maroc-.*\.svg$/.test(f) || /^wa9i-maroc-(icon-512)\.png$/.test(f)) files.push("assets/logo/" + f);
+const out = {};
+for (const f of files) {
+  const ext = f.split(".").pop(), binary = ext === "png";
+  out["/" + f] = { type: TYPES[ext], body: binary ? readFileSync(f).toString("base64") : readFileSync(f, "utf8"), ...(binary ? { b64: true } : {}) };
+}
 mkdirSync("dist", { recursive: true });
-writeFileSync("dist/worker.js", `const SITE = ${JSON.stringify(site)};
-const HEADERS = { "X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origin-when-cross-origin", "X-Robots-Tag": "noindex" };
-export default {
-  async fetch(request) {
-    const url = new URL(request.url);
-    if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
-    const f = SITE[url.pathname] || (url.pathname === "/index.html" ? SITE["/"] : null);
-    if (!f) return Response.redirect(url.origin + "/", 302);
-    const cache = url.pathname === "/" || url.pathname === "/index.html" ? "public, max-age=300" : "public, max-age=3600";
-    return new Response(request.method === "HEAD" ? null : f.body, { headers: { "Content-Type": f.type, "Cache-Control": cache, ...HEADERS } });
-  },
-};
-`);
-console.log("dist/worker.js written");
+writeFileSync("dist/site.js", `export const FILES = ${JSON.stringify(out)};\n`);
+console.log(`dist/site.js: ${files.length} files, ${(JSON.stringify(out).length / 1024).toFixed(0)} KiB`);

@@ -1,13 +1,14 @@
 /* Wa9i — demo phone-case shop by AbacheDev.
    Single-page app with hash routes: #/  #/c/brand  #/c/brand/model  #/p/id  #/panier  #/commande  #/contact  #/recherche/q
-   Plain JavaScript, no build, no backend: orders are sent as a WhatsApp message (demo). */
+   Plain JavaScript, no build. Orders go to the server (POST /api/orders) and show up in the admin at /admin/.
+   The admin's settings, prices and stock come from GET /api/config. */
 (() => {
   "use strict";
 
   /* ---------- Config ---------- */
   const CONFIG = {
     currency: { fr: "DH", ar: "درهم" },
-    whatsapp: "", // digits only, e.g. 2126XXXXXXXX. Empty = the visitor picks the chat (demo).
+    whatsapp: "", // digits only, e.g. 2126XXXXXXXX. Set in the admin (Réglages). Empty = the visitor picks the chat.
     freeShippingFrom: 2, // items
     shipping: 25,
     coupon: { code: "WA9I2", minItems: 2 },
@@ -26,7 +27,7 @@
       searchPh: "Votre modèle : iPhone 17, Galaxy S26…", menu: "Menu", yourCart: "Votre panier", cart: "Panier", contact: "Contact",
       footAbout: "Des coques qui protègent pour de vrai, pour plus de 40 modèles. Vous payez à la livraison.",
       footShop: "Boutique", footHelp: "Aide", footDelivery: "Livraison & retours",
-      demo: "Site de démonstration : marque fictive, aucune commande réelle.",
+      demo: "Site de démonstration : marque fictive.",
       promoA: "Livraison offerte", promoB: "dès 2 coques · code",
       home: "Accueil", all: "Tout voir", accessories: "Accessoires",
       s1k: "Nouvelle collection", s1t: "Le Maroc <em>dans votre poche</em>", s1p: "Motifs zellige, étoile verte et broderie amazighe, imprimés sur des coques antichoc pour iPhone, Samsung et plus encore.",
@@ -53,7 +54,8 @@
       thanks: "Merci, commande reçue !", thanksTxt: "Votre référence est {ref}. Nous vous appelons au {phone} pour confirmer, puis le colis part.", thanksWa: "Envoyer aussi sur WhatsApp", backShop: "Retour à la boutique",
       waIntro: "Nouvelle commande Wa9i", ctTitle: "Contactez-nous", ctTxt: "Une question sur un modèle, une commande ou un échange ? Écrivez-nous.",
       ctHours: "Horaires", ctHoursV: "Tous les jours, 9h – 22h", ctDel: "Livraison", ctDelV: "Partout au Maroc, 24–72 h", ctSwap: "Échanges", ctSwapV: "Sous 7 jours, produit non utilisé", ctWa: "Écrire sur WhatsApp",
-      notFound: "Page introuvable", feat: ["Bords surélevés qui protègent l’écran et les caméras", "Coins renforcés contre les chutes", "Boutons précis, découpes exactes", "Compatible charge sans fil"],
+      notFound: "Page introuvable", eOrder: "La commande n’a pas pu être envoyée. Réessayez ou écrivez-nous sur WhatsApp.", eRate: "Trop de commandes avec ce numéro. Réessayez dans une heure ou écrivez-nous sur WhatsApp.", eStock: "Un article n’est plus disponible en quantité suffisante.",
+      lowStock: "Plus que {n} en stock", outStock: "Rupture de stock", feat: ["Bords surélevés qui protègent l’écran et les caméras", "Coins renforcés contre les chutes", "Boutons précis, découpes exactes", "Compatible charge sans fil"],
       cartLabel: "Panier", close: "Fermer", langLabel: "Changer de langue",
     },
     ar: {
@@ -61,7 +63,7 @@
       searchPh: "موديلك: iPhone 17، Galaxy S26…", menu: "القائمة", yourCart: "سلتك", cart: "السلة", contact: "اتصل بنا",
       footAbout: "كوكات كتحمي بصح، لأكثر من 40 موديل. كتخلص ملي توصلك.",
       footShop: "المتجر", footHelp: "مساعدة", footDelivery: "التوصيل والإرجاع",
-      demo: "موقع تجريبي: علامة وهمية، لا توجد طلبات حقيقية.",
+      demo: "موقع تجريبي: علامة وهمية.",
       promoA: "التوصيل مجاني", promoB: "ابتداءً من كوكتين · الكود",
       home: "الرئيسية", all: "عرض الكل", accessories: "إكسسوارات",
       s1k: "مجموعة جديدة", s1t: "المغرب <em>فجيبك</em>", s1p: "زليج، النجمة الخضراء والطرز الأمازيغي، مطبوعين على كوكات مضادة للصدمات لآيفون وسامسونج وغيرهم.",
@@ -88,7 +90,8 @@
       thanks: "شكراً، توصلنا بالطلب!", thanksTxt: "المرجع ديالك هو {ref}. غادي نعيطو ليك على {phone} باش نأكدو، ومن بعد كيتصيفط الكولي.", thanksWa: "صيفط تاني على واتساب", backShop: "رجوع للمتجر",
       waIntro: "طلب جديد Wa9i", ctTitle: "اتصل بنا", ctTxt: "عندك سؤال على موديل، طلب أو تبديل؟ كتب لينا.",
       ctHours: "الأوقات", ctHoursV: "كل يوم، 9 صباحاً – 10 ليلاً", ctDel: "التوصيل", ctDelV: "فجميع المدن، 24–72 ساعة", ctSwap: "التبديل", ctSwapV: "خلال 7 أيام، منتج غير مستعمل", ctWa: "كتب لينا على واتساب",
-      notFound: "الصفحة غير موجودة", feat: ["حواف مرتفعة كتحمي الشاشة والكاميرات", "زوايا مقواة ضد الطيحات", "أزرار دقيقة وفتحات مضبوطة", "متوافقة مع الشحن اللاسلكي"],
+      notFound: "الصفحة غير موجودة", eOrder: "ما تصيفطش الطلب. عاود جرب ولا كتب لينا على واتساب.", eRate: "بزاف ديال الطلبات بهاد الرقم. جرب من بعد ساعة ولا كتب لينا على واتساب.", eStock: "شي منتج ما بقاش متوفر بهاد الكمية.",
+      lowStock: "باقي غير {n} فالستوك", outStock: "نفذ من المخزون", feat: ["حواف مرتفعة كتحمي الشاشة والكاميرات", "زوايا مقواة ضد الطيحات", "أزرار دقيقة وفتحات مضبوطة", "متوافقة مع الشحن اللاسلكي"],
       cartLabel: "السلة", close: "إغلاق", langLabel: "تغيير اللغة",
     },
   };
@@ -98,74 +101,31 @@
   const money = (n) => (lang === "ar" ? `${n.toLocaleString("fr-MA")} ${CONFIG.currency.ar}` : `${n.toLocaleString("fr-MA")} ${CONFIG.currency.fr}`);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  /* ---------- Catalogue ---------- */
-  const BRANDS = [
-    { id: "iphone", name: "iPhone", cam: "tri", models: ["iPhone 18 Pro Max", "iPhone 18 Pro", "iPhone 17 Pro Max", "iPhone 17 Pro", "iPhone 17", "iPhone 16", "iPhone 15"] },
-    { id: "samsung", name: "Samsung", cam: "vert", models: ["Galaxy S26 Ultra", "Galaxy S26", "Galaxy A57", "Galaxy A37", "Galaxy A17"] },
-    { id: "xiaomi", name: "Xiaomi", cam: "square", models: ["Xiaomi 15T Pro", "Redmi Note 15 Pro", "Redmi 15C"] },
-    { id: "huawei", name: "Huawei", cam: "round", models: ["Pura 80 Pro", "Nova 14"] },
-    { id: "oppo", name: "Oppo", cam: "round", models: ["Reno 14", "A5 Pro"] },
-    { id: "honor", name: "Honor", cam: "round", models: ["Honor 400", "Magic 7 Lite", "X9c"] },
-    { id: "google", name: "Google", cam: "bar", models: ["Pixel 10 Pro", "Pixel 10", "Pixel 9a"] },
-    { id: "infinix", name: "Infinix", cam: "square", models: ["Note 50 Pro", "Hot 60"] },
-  ];
-  const slug = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-
-  const DESIGNS = [
-    { key: "zellige", coll: "zellige", name: { fr: "Zellige Fès", ar: "زليج فاس" }, pattern: "zellige", colors: ["#0e7a5f", "#1d4ed8", "#9a3412"], price: 189, old: 249, badge: { fr: "Best-seller", ar: "الأكثر مبيعاً" } },
-    { key: "najma", coll: "zellige", name: { fr: "Étoile Atlas", ar: "نجمة الأطلس" }, pattern: "star", colors: ["#b91c1c", "#0c1f1a"], price: 169, old: 219 },
-    { key: "amazigh", coll: "zellige", name: { fr: "Tissage amazigh", ar: "طرز أمازيغي" }, pattern: "amazigh", colors: ["#f2b33d", "#f6efe2", "#0c1f1a"], price: 179, old: 229, badge: { fr: "Nouveau", ar: "جديد" }, isNew: true },
-    { key: "clear", coll: "clear", name: { fr: "Clear MagSafe", ar: "شفافة MagSafe" }, pattern: "clear", colors: ["#cfe3ee", "#e9d5ff", "#0c1f1a"], price: 199, old: 259, badge: { fr: "MagSafe", ar: "MagSafe" } },
-    { key: "frost", coll: "clear", name: { fr: "Givrée mate MagSafe", ar: "مطفية MagSafe" }, pattern: "frost", colors: ["#94a3b8", "#86efac", "#fda4af"], price: 189, old: 239, isNew: true },
-    { key: "leather", coll: "cuir", name: { fr: "Cuir pleine fleur", ar: "جلد طبيعي" }, pattern: "leather", colors: ["#7c4a21", "#1f1f1f", "#2f4a3a"], price: 279, old: 349, badge: { fr: "Cuir", ar: "جلد" } },
-    { key: "wallet", coll: "cuir", name: { fr: "Étui portefeuille", ar: "حافظة محفظة" }, pattern: "wallet", colors: ["#3b2412", "#1f1f1f", "#7f1d1d"], price: 249, old: 299 },
-    { key: "armor", coll: "armor", name: { fr: "Armure antichoc + anneau", ar: "مضادة للصدمات + حلقة" }, pattern: "armor", colors: ["#1f2937", "#9a3412", "#1e3a8a"], price: 229, old: 289, badge: { fr: "Antichoc", ar: "مضادة للصدمات" } },
-    { key: "carbon", coll: "armor", name: { fr: "Fibre carbone fine", ar: "ألياف الكربون" }, pattern: "carbon", colors: ["#111827", "#374151"], price: 159, old: 199 },
-    { key: "marble", coll: "zellige", name: { fr: "Marbre & or", ar: "رخام وذهبي" }, pattern: "marble", colors: ["#f5f0e6", "#1f1f1f"], price: 169, old: 209 },
-  ];
-
-  const COLLS = {
-    zellige: { name: { fr: "Zellige & Maroc", ar: "زليج ومغرب" } },
-    clear: { name: { fr: "Transparent MagSafe", ar: "شفاف MagSafe" } },
-    cuir: { name: { fr: "Cuir", ar: "جلد" } },
-    armor: { name: { fr: "Antichoc", ar: "مضاد للصدمات" } },
-  };
-
-  const ACCESSORIES = [
-    { key: "charger", name: { fr: "Chargeur rapide 30 W USB-C", ar: "شاحن سريع 30 واط USB-C" }, icon: "charger", colors: ["#f5f5f4", "#111827"], price: 149, old: 199 },
-    { key: "cable", name: { fr: "Câble tressé USB-C 2 m", ar: "كابل مضفور USB-C 2 متر" }, icon: "cable", colors: ["#0e7a5f", "#111827"], price: 79, old: 99 },
-    { key: "glass", name: { fr: "Verre trempé 9H (x2)", ar: "زجاج مقوى 9H (x2)" }, icon: "glass", colors: ["#cfe3ee"], price: 69, old: 99, badge: { fr: "Pack x2", ar: "x2" } },
-    { key: "magsafe", name: { fr: "Chargeur MagSafe 15 W", ar: "شاحن MagSafe 15 واط" }, icon: "puck", colors: ["#f5f5f4"], price: 179, old: 229 },
-    { key: "strap", name: { fr: "Cordon tour de cou", ar: "حبل للعنق" }, icon: "strap", colors: ["#f2b33d", "#0e7a5f", "#111827"], price: 59, old: 79, isNew: true },
-    { key: "stand", name: { fr: "Support voiture magnétique", ar: "حامل مغناطيسي للسيارة" }, icon: "stand", colors: ["#111827"], price: 129, old: 169 },
-  ];
-
-  // Deterministic pseudo-random so the demo looks the same on every visit
-  const hash = (s) => { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; };
-
-  const PRODUCTS = [];
-  BRANDS.forEach((b, bi) => b.models.forEach((m, mi) => {
-    const ms = slug(m);
-    DESIGNS.forEach((d, di) => {
-      // Not every design for every model (older models get fewer)
-      if ((hash(ms + d.key) % 10) < Math.min(2 + mi, 4) && di > 2) return;
-      const h = hash(ms + d.key);
-      PRODUCTS.push({
-        id: `${d.key}-${ms}`, brand: b.id, model: m, modelSlug: ms, cam: b.cam, design: d.key, coll: d.coll,
-        name: d.name, pattern: d.pattern, colors: d.colors, price: d.price + (mi === 0 && bi < 2 ? 20 : 0), old: d.old + (mi === 0 && bi < 2 ? 20 : 0),
-        badge: d.badge, isNew: !!d.isNew || mi === 0, pop: (h % 1000) + (d.badge ? 400 : 0) + (b.id === "iphone" ? 300 : 0) + (mi < 2 ? 200 : 0),
-        rating: 4.5 + ((h >> 3) % 5) / 10, reviews: 12 + (h % 180), order: bi * 1000 + mi * 50 + di,
-      });
-    });
-  }));
-  ACCESSORIES.forEach((a, i) => PRODUCTS.push({
-    id: `acc-${a.key}`, brand: "accessoires", model: null, modelSlug: null, accessory: a.icon, name: a.name, colors: a.colors,
-    price: a.price, old: a.old, badge: a.badge, isNew: !!a.isNew, pop: 500 - i * 40, rating: 4.6, reviews: 40 + i * 17, order: 90000 + i,
-  }));
-  const byId = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
+  /* ---------- Catalogue (catalog.js), with the admin's prices, stock and hidden products ---------- */
+  const { BRANDS, DESIGNS, COLLS, ACCESSORIES, CITIES, slug } = self.WA9I_CATALOG;
+  const ALL_PRODUCTS = self.WA9I_CATALOG.PRODUCTS.map((p) => ({ ...p }));
+  let PRODUCTS = ALL_PRODUCTS;
+  const byId = Object.fromEntries(ALL_PRODUCTS.map((p) => [p.id, p]));
   const productTitle = (p) => (p.model ? `${L(p.name)} — ${p.model}` : L(p.name));
-
-  const CITIES = ["Casablanca", "Rabat", "Marrakech", "Fès", "Tanger", "Agadir", "Meknès", "Oujda", "Kénitra", "Tétouan", "Salé", "Témara", "Mohammedia", "El Jadida", "Béni Mellal", "Nador", "Safi", "Khouribga", "Settat", "Laâyoune", "Dakhla", "Essaouira", "Ouarzazate", "Errachidia", "Taza", "Larache", "Khémisset", "Berrechid", "Guelmim", "Autre ville"];
+  function applyConfig(cfg) {
+    const s = cfg && cfg.settings;
+    if (s) {
+      if (typeof s.whatsapp === "string") CONFIG.whatsapp = s.whatsapp;
+      if (Number.isFinite(s.shipping)) CONFIG.shipping = s.shipping;
+      if (Number.isFinite(s.freeShippingFrom)) CONFIG.freeShippingFrom = s.freeShippingFrom;
+      if (s.couponCode !== undefined) CONFIG.coupon.code = String(s.couponCode || "").toUpperCase();
+      if (s.announcement) CONFIG.announcement = s.announcement;
+    }
+    const ov = (cfg && cfg.products) || {};
+    for (const p of ALL_PRODUCTS) {
+      const o = ov[p.id]; if (!o) continue;
+      if (Number.isFinite(o.price)) p.price = o.price;
+      if (Number.isFinite(o.old)) p.old = o.old;
+      p.hidden = !!o.hidden;
+      p.stock = Number.isFinite(o.stock) ? o.stock : undefined;
+    }
+    PRODUCTS = ALL_PRODUCTS.filter((p) => !p.hidden);
+  }
 
   /* ---------- Case art (original SVG drawings) ---------- */
   let uid = 0;
@@ -249,7 +209,8 @@
   const cartSub = () => cart.reduce((a, l) => a + byId[l.id].price * l.qty, 0);
   const shippingCost = (items) => (items >= CONFIG.freeShippingFrom || (coupon === CONFIG.coupon.code && items >= CONFIG.coupon.minItems) ? 0 : CONFIG.shipping);
   function addToCart(id, color, qty = 1, silent) {
-    const p = byId[id]; if (!p) return;
+    const p = byId[id]; if (!p || p.hidden) return;
+    if (p.stock === 0) { toast(t("outStock")); return; }
     color = color || p.colors[0];
     const line = cart.find((l) => l.id === id && l.color === color);
     if (line) line.qty = Math.min(20, line.qty + qty); else cart.push({ id, color, qty });
@@ -297,7 +258,8 @@
   const crumbs = (items) => `<nav class="crumbs" aria-label="Fil d’Ariane"><a href="#/">${t("home")}</a>${items.map(([href, label]) => ` / ${href ? `<a href="${href}">${esc(label)}</a>` : `<span aria-current="page">${esc(label)}</span>`}`).join("")}</nav>`;
 
   function codFields(prefix, light) {
-    return `<div class="fields${light ? " light" : ""}">
+    return `<input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+    <div class="fields${light ? " light" : ""}">
       <div class="field"><label for="${prefix}name">${t("fName")}</label><input id="${prefix}name" name="name" autocomplete="name" required><span class="err"></span></div>
       <div class="field"><label for="${prefix}phone">${t("fPhone")}</label><input id="${prefix}phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="06 12 34 56 78" required dir="ltr"><span class="err"></span></div>
       <div class="field"><label for="${prefix}city">${t("fCity")}</label><select id="${prefix}city" name="city" required><option value="">${t("fCityPh")}</option>${CITIES.map((c) => `<option>${c}</option>`).join("")}</select><span class="err"></span></div>
@@ -316,21 +278,30 @@
     }
     return ok;
   }
-  function placeOrder(form, lines) {
+  async function placeOrder(form, lines) {
     if (!validate(form)) return;
+    const btn = form.querySelector("[type=submit]"); if (btn.disabled) return;
     const data = Object.fromEntries(new FormData(form));
-    const items = lines.reduce((a, l) => a + l.qty, 0);
-    const sub = lines.reduce((a, l) => a + byId[l.id].price * l.qty, 0);
-    const ship = shippingCost(items);
-    const ref = "W9-" + Date.now().toString(36).slice(-5).toUpperCase();
     const phone = normPhone(data.phone);
-    const msg = [`${t("waIntro")} · ${ref}`, "", ...lines.map((l) => `• ${l.qty} × ${productTitle(byId[l.id])} (${l.color}) — ${money(byId[l.id].price * l.qty)}`), "",
-      `${t("shipping")}: ${ship ? money(ship) : t("free")}`, `${t("total")}: ${money(sub + ship)}`, "",
-      `${t("fName")}: ${data.name.trim()}`, `${t("fPhone")}: ${phone}`, `${t("fCity")}: ${data.city}`, `${t("fAddress")}: ${data.address.trim()}`, data.note ? `${t("fNote")}: ${data.note.trim()}` : ""].filter((x) => x !== null).join("\n");
-    const wa = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
-    store.set("lastOrder", { ref, phone, wa });
-    if (lines === cart) { cart = []; coupon = ""; saveCart(); }
-    location.hash = "#/merci";
+    btn.disabled = true;
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: data.name.trim(), phone, city: data.city, address: data.address.trim(), note: (data.note || "").trim(), website: data.website || "",
+          lang, coupon: lines === cart ? coupon : "", items: lines.map((l) => ({ id: l.id, color: l.color, qty: l.qty })) }),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) { toast(out.error === "rate" ? t("eRate") : out.error === "stock" ? t("eStock") : t("eOrder")); return; }
+      const o = out.order;
+      const msg = [`${t("waIntro")} · ${o.ref}`, "", ...o.items.map((l) => `• ${l.qty} × ${l.title} (${l.colorName || l.color}) — ${money(l.price * l.qty)}`), "",
+        `${t("shipping")}: ${o.shipping ? money(o.shipping) : t("free")}`, `${t("total")}: ${money(o.total)}`, "",
+        `${t("fName")}: ${o.name}`, `${t("fPhone")}: ${o.phone}`, `${t("fCity")}: ${o.city}`, `${t("fAddress")}: ${o.address}`, o.note ? `${t("fNote")}: ${o.note}` : ""].join("\n");
+      const wa = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+      store.set("lastOrder", { ref: o.ref, phone: o.phone, wa });
+      if (lines === cart) { cart = []; coupon = ""; saveCart(); }
+      location.hash = "#/merci";
+    } catch { toast(t("eOrder")); }
+    finally { btn.disabled = false; }
   }
 
   /* ---------- Views ---------- */
@@ -441,9 +412,9 @@
           <h1>${esc(productTitle(p))}</h1>
           <div class="rating"><span class="stars" aria-hidden="true">${stars}</span><span>${p.rating.toFixed(1)} · ${p.reviews} ${t("reviews")}</span></div>
           <div class="pdp-price"><b>${money(p.price)}</b><s>${money(p.old)}</s><span class="save">-${off}%</span></div>
-          ${p.colors.length > 1 ? `<p class="opt-label">${t("colour")}</p><div class="colors" id="colors">${p.colors.map((c, i) => `<button type="button" style="background:${c}" aria-pressed="${i === 0}" data-color="${c}" aria-label="${t("colour")} ${i + 1}"></button>`).join("")}</div>` : ""}
+          ${p.colors.length > 1 ? `<p class="opt-label">${t("colour")} <span id="colorName">${esc(self.WA9I_CATALOG.colorName(color, lang))}</span></p><div class="colors" id="colors">${p.colors.map((c, i) => `<button type="button" style="background:${c}" aria-pressed="${i === 0}" data-color="${c}" aria-label="${t("colour")} : ${esc(self.WA9I_CATALOG.colorName(c, lang))}" title="${esc(self.WA9I_CATALOG.colorName(c, lang))}"></button>`).join("")}</div>` : ""}
           ${siblings.length > 1 ? `<p class="opt-label">${t("forModel")}</p><div class="models">${siblings.map((s) => `<a href="#/p/${s.id}"${s.id === p.id ? ' aria-current="page"' : ""}>${s.model}</a>`).join("")}</div>` : ""}
-          <p class="stock">${t("inStock")}</p>
+          <p class="stock${p.stock === 0 ? " out" : ""}">${p.stock === 0 ? t("outStock") : Number.isFinite(p.stock) && p.stock <= 5 ? t("lowStock", { n: p.stock }) : t("inStock")}</p>
           <div class="buy-row">
             <div class="qty"><button type="button" data-q="-1" aria-label="-">−</button><input id="qty" type="number" min="1" max="20" value="1" aria-label="${t("qty")}"><button type="button" data-q="1" aria-label="+">+</button></div>
             <button type="button" class="btn btn-ghost" id="addBtn">${t("add")}</button>
@@ -472,7 +443,7 @@
         };
         const qty = () => Math.max(1, Math.min(20, parseInt(qtyEl.value, 10) || 1));
         const sum = () => { const q = qty(); const ship = shippingCost(q); $("#codTotal").textContent = money(p.price * q + ship); $("#codShip").textContent = `(${t("shipping")} : ${ship ? money(ship) : t("free")})`; };
-        $$("#colors button").forEach((btn) => btn.addEventListener("click", () => { color = btn.dataset.color; $$("#colors button").forEach((x) => x.setAttribute("aria-pressed", x === btn)); paint(); }));
+        $$("#colors button").forEach((btn) => btn.addEventListener("click", () => { color = btn.dataset.color; $$("#colors button").forEach((x) => x.setAttribute("aria-pressed", x === btn)); const cn = $("#colorName"); if (cn) cn.textContent = self.WA9I_CATALOG.colorName(color, lang); paint(); }));
         $$("#gThumbs button").forEach((btn) => btn.addEventListener("click", () => { view = +btn.dataset.view; paint(); }));
         $$("[data-q]").forEach((btn) => btn.addEventListener("click", () => { qtyEl.value = Math.max(1, Math.min(20, qty() + +btn.dataset.q)); sum(); }));
         qtyEl.addEventListener("input", sum);
@@ -497,7 +468,7 @@
   function bindCoupon() {
     $("#couponForm")?.addEventListener("submit", (e) => {
       e.preventDefault(); const v = e.target.elements.c.value.trim().toUpperCase();
-      if (v === CONFIG.coupon.code) { coupon = v; saveCart(); toast(t("couponOk")); render(); } else { coupon = ""; saveCart(); toast(t("couponBad")); }
+      if (CONFIG.coupon.code && v === CONFIG.coupon.code) { coupon = v; saveCart(); toast(t("couponOk")); render(); } else { coupon = ""; saveCart(); toast(t("couponBad")); }
     });
   }
   const lineHTML = (l, i) => { const p = byId[l.id]; return `<div class="line">
@@ -620,7 +591,18 @@
     if (quiet !== true) lastFocus?.focus?.();
   }
 
-  function init() {
+  async function loadConfig() {
+    try {
+      const ctrl = new AbortController(); const tm = setTimeout(() => ctrl.abort(), 2500);
+      const res = await fetch("/api/config", { signal: ctrl.signal }); clearTimeout(tm);
+      if (res.ok) applyConfig(await res.json());
+    } catch { /* offline or static preview: keep the built-in defaults */ }
+    cart = cart.filter((l) => byId[l.id] && !byId[l.id].hidden);
+    const a = CONFIG.announcement;
+    if (a && (a.fr || a.ar)) { const el = $("#promo p"); if (el) el.textContent = (lang === "ar" ? a.ar : a.fr) || a.fr || a.ar; }
+  }
+  async function init() {
+    await loadConfig();
     buildChrome(); updateCartUI();
     $("#menuBtn").addEventListener("click", () => openDrawer($("#drawer")));
     $("#cartBtn").addEventListener("click", () => openDrawer($("#cartDrawer")));
@@ -629,7 +611,7 @@
     $("#drawerBody").addEventListener("click", (e) => { if (e.target.closest("a")) closeDrawers(true); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawers(); });
     $("#searchForm").addEventListener("submit", (e) => { e.preventDefault(); const q = $("#searchInput").value.trim(); if (q) location.hash = `#/recherche/${encodeURIComponent(q)}`; });
-    $("#langBtn").addEventListener("click", () => { lang = lang === "ar" ? "fr" : "ar"; store.set("lang", lang); buildChrome(); updateCartUI(); render(); });
+    $("#langBtn").addEventListener("click", () => { lang = lang === "ar" ? "fr" : "ar"; store.set("lang", lang); buildChrome(); updateCartUI(); render(); const a = CONFIG.announcement; if (a && (a.fr || a.ar)) $("#promo p").textContent = (lang === "ar" ? a.ar : a.fr) || a.fr || a.ar; });
     if (store.get("promoClosed", false)) document.body.classList.add("no-promo");
     $("#promoClose").addEventListener("click", () => { document.body.classList.add("no-promo"); store.set("promoClosed", true); });
     window.addEventListener("hashchange", () => { closeDrawers(true); render(); });

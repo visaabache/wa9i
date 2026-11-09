@@ -1,9 +1,14 @@
-// Cloudflare Worker for the Wa9i demo shop.
-// The site (index.html, styles.css, app.js) is bundled into dist/worker.js by tools/build-worker.mjs.
+// Cloudflare Worker for the Wa9i shop and its admin (/admin/).
+// The site files are bundled into dist/site.js by tools/build-worker.mjs; src/worker.js serves them and the API.
+// Orders, settings, prices and stock are stored in Workers KV (binding DATA).
+// Admin password: npx wrangler secret put ADMIN_PASSWORD (can then be changed from the admin, under Réglages).
 // Deploy: node tools/build-worker.mjs && CLOUDFLARE_ACCOUNT_ID=<id> npx wrangler deploy
 {
   "name": "wa9i",
-  "main": "dist/worker.js",
+  "main": "src/worker.js",
   "compatibility_date": "2026-10-01",
-  "workers_dev": true
+  "workers_dev": true,
+  "preview_urls": false,
+  "kv_namespaces": [{ "binding": "DATA", "id": "b00be9d42ddd45ce9db542ef66bafa01" }],
+  "observability": { "enabled": true }
 }

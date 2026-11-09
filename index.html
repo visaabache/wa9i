@@ -7,11 +7,12 @@
   <meta name="description" content="Démo de boutique en ligne de coques de téléphone, conçue par AbacheDev : catalogue par marque et modèle, commande en paiement à la livraison, FR / AR.">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#0c1f1a">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='4' width='36' height='56' rx='10' fill='%230e7a5f'/%3E%3Cpath d='M32 18l4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1z' fill='%23f2b33d'/%3E%3C/svg%3E">
+  <link rel="icon" href="/assets/logo/wa9i-maroc-mark.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/logo/wa9i-maroc-icon-512.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <a class="skip" href="#main" data-t="skip">Aller au contenu</a>
@@ -33,10 +34,8 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg>
       </button>
       <a href="#/" class="logo" aria-label="Wa9i, accueil">
-        <span class="logo-mark" aria-hidden="true">
-          <svg viewBox="0 0 40 56"><rect x="1" y="1" width="38" height="54" rx="10"/><path d="M20 15l3.4 6.9 7.6.9-5.6 5.2 1.5 7.5L20 31.8l-6.9 3.7 1.5-7.5L9 22.8l7.6-.9z"/></svg>
-        </span>
-        <span class="logo-text">Wa9i<small>واقي</small></span>
+        <span class="logo-mark" aria-hidden="true"><img src="/assets/logo/wa9i-maroc-mark.svg" alt="" width="33" height="44"></span>
+        <span class="logo-text"><span>Wa<em>9</em>i</span><small>واقي</small></span>
       </a>
       <form class="search" id="searchForm" role="search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -58,7 +57,7 @@
   <footer class="footer">
     <div class="wrap footer-in">
       <div>
-        <a href="#/" class="logo logo-foot"><span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 40 56"><rect x="1" y="1" width="38" height="54" rx="10"/><path d="M20 15l3.4 6.9 7.6.9-5.6 5.2 1.5 7.5L20 31.8l-6.9 3.7 1.5-7.5L9 22.8l7.6-.9z"/></svg></span><span class="logo-text">Wa9i<small>واقي</small></span></a>
+        <a href="#/" class="logo logo-foot"><span class="logo-mark" aria-hidden="true"><img src="/assets/logo/wa9i-maroc-mark.svg" alt="" width="33" height="44"></span><span class="logo-text"><span>Wa<em>9</em>i</span><small>واقي</small></span></a>
         <p data-t="footAbout">Des coques qui protègent pour de vrai, pour plus de 40 modèles. Vous payez à la livraison.</p>
       </div>
       <div>
@@ -74,7 +73,7 @@
         </ul>
       </div>
     </div>
-    <p class="wrap credit"><span data-t="demo">Site de démonstration : marque fictive, aucune commande réelle.</span> · <a href="https://abachedev.com/">AbacheDev</a></p>
+    <p class="wrap credit"><span data-t="demo">Site de démonstration : marque fictive.</span> · <a href="https://abachedev.com/">AbacheDev</a></p>
   </footer>
 
   <div class="promo" id="promo" role="region" aria-label="Offre">
@@ -96,6 +95,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js"></script>
+  <script src="/catalog.js"></script>
+  <script src="/app.js"></script>
 </body>
 </html>

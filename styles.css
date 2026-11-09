@@ -50,11 +50,11 @@ h1, h2, h3 { line-height: 1.15; margin: 0; letter-spacing: -.01em; }
 .icon-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 .burger { display: none; }
 .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
-.logo-mark svg { width: 30px; height: 42px; }
-.logo-mark rect { fill: var(--green); }
-.logo-mark path { fill: var(--gold); }
+.logo-mark img { width: 33px; height: 44px; display: block; }
+.logo-text em { font-style: normal; color: #c1272d; }
+.logo-foot .logo-text em { color: var(--gold); }
 .logo-text { font-weight: 800; font-size: 26px; letter-spacing: -.03em; display: flex; flex-direction: column; line-height: .95; }
-.logo-text small { font-family: var(--font-ar); font-weight: 700; font-size: 13px; color: var(--green); letter-spacing: 0; }
+.logo-text small { font-family: var(--font-ar); font-weight: 700; font-size: 13px; color: #c1272d; letter-spacing: 0; }
 .search { flex: 1; position: relative; max-width: 560px; margin-inline: auto; }
 .search svg { position: absolute; inset-inline-start: 14px; top: 50%; translate: 0 -50%; width: 18px; height: 18px; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; }
 .search input { width: 100%; height: 46px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); padding-inline: 44px 16px; }
@@ -221,6 +221,7 @@ h1, h2, h3 { line-height: 1.15; margin: 0; letter-spacing: -.01em; }
 .models a { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); text-decoration: none; font-size: 14px; font-weight: 600; }
 .models a[aria-current="page"] { border-color: var(--green); color: var(--green); background: rgb(14 122 95 / .06); }
 .stock { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--green); margin: 16px 0 0; }
+.stock.out { color: var(--sale); }
 .stock::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px rgb(14 122 95 / .15); }
 .buy-row { display: flex; gap: 10px; margin-top: 16px; }
 .qty { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
