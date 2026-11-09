@@ -23,6 +23,9 @@ In French or Arabic, on computer and phone (bottom tab bar on mobile):
 
 The first password is the `ADMIN_PASSWORD` secret (`npx wrangler secret put ADMIN_PASSWORD`). Once you change it from Settings, the new one is stored hashed (PBKDF2) in KV and replaces the secret.
 
+## Photos
+The banners, collection tiles, the "Inspiré du Maroc" section and the contact banner use 12 photos from Unsplash (free for commercial use, picked without visible brand logos). They're in `assets/photos/` as WebP, listed in `CREDITS.md` and on the shop's `#/credits` page.
+
 ## Customise
 - **Products, brands, models, base prices, colour names:** `catalog.js` (shared by the shop and the server). Prices and stock can also be changed in the admin.
 - **Text (FR / AR):** the `T` object in `app.js` (shop) and `admin/admin.js` (admin).

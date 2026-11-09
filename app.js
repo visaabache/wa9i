@@ -54,6 +54,9 @@
       thanks: "Merci, commande reçue !", thanksTxt: "Votre référence est {ref}. Nous vous appelons au {phone} pour confirmer, puis le colis part.", thanksWa: "Envoyer aussi sur WhatsApp", backShop: "Retour à la boutique",
       waIntro: "Nouvelle commande Wa9i", ctTitle: "Contactez-nous", ctTxt: "Une question sur un modèle, une commande ou un échange ? Écrivez-nous.",
       ctHours: "Horaires", ctHoursV: "Tous les jours, 9h – 22h", ctDel: "Livraison", ctDelV: "Partout au Maroc, 24–72 h", ctSwap: "Échanges", ctSwapV: "Sous 7 jours, produit non utilisé", ctWa: "Écrire sur WhatsApp",
+      insK: "Inspiré du Maroc", insT: "Nos motifs viennent <em>d’ici</em>", insP: "Zellige de Fès, arcs des médersas, couleurs des souks de Marrakech : chaque collection Wa9i s’inspire d’un lieu du Maroc.", insCta: "Voir la collection Maroc",
+      phKoutoubia: "La Koutoubia et l’Atlas enneigé, Marrakech", phMedersa: "Zellige et plâtre sculpté d’une médersa", phFountain: "Fontaine en zellige", phSouk: "Épices et couleurs du souk",
+      credits: "Crédits photos", creditsTxt: "Les photos du site viennent d’Unsplash, sous la licence Unsplash (usage commercial libre). Les visuels des coques sont des dessins Wa9i.", creditsOpen: "Voir sur Unsplash",
       notFound: "Page introuvable", eOrder: "La commande n’a pas pu être envoyée. Réessayez ou écrivez-nous sur WhatsApp.", eRate: "Trop de commandes avec ce numéro. Réessayez dans une heure ou écrivez-nous sur WhatsApp.", eStock: "Un article n’est plus disponible en quantité suffisante.",
       lowStock: "Plus que {n} en stock", outStock: "Rupture de stock", feat: ["Bords surélevés qui protègent l’écran et les caméras", "Coins renforcés contre les chutes", "Boutons précis, découpes exactes", "Compatible charge sans fil"],
       cartLabel: "Panier", close: "Fermer", langLabel: "Changer de langue",
@@ -90,6 +93,9 @@
       thanks: "شكراً، توصلنا بالطلب!", thanksTxt: "المرجع ديالك هو {ref}. غادي نعيطو ليك على {phone} باش نأكدو، ومن بعد كيتصيفط الكولي.", thanksWa: "صيفط تاني على واتساب", backShop: "رجوع للمتجر",
       waIntro: "طلب جديد Wa9i", ctTitle: "اتصل بنا", ctTxt: "عندك سؤال على موديل، طلب أو تبديل؟ كتب لينا.",
       ctHours: "الأوقات", ctHoursV: "كل يوم، 9 صباحاً – 10 ليلاً", ctDel: "التوصيل", ctDelV: "فجميع المدن، 24–72 ساعة", ctSwap: "التبديل", ctSwapV: "خلال 7 أيام، منتج غير مستعمل", ctWa: "كتب لينا على واتساب",
+      insK: "مستوحى من المغرب", insT: "النقوش ديالنا <em>من هنا</em>", insP: "زليج فاس، أقواس المدارس، وألوان أسواق مراكش: كل مجموعة ديال Wa9i مستوحاة من بلاصة فالمغرب.", insCta: "شوف مجموعة المغرب",
+      phKoutoubia: "الكتبية والأطلس مغطي بالثلج، مراكش", phMedersa: "زليج وجبس منقوش فمدرسة", phFountain: "خصة بالزليج", phSouk: "توابل وألوان السوق",
+      credits: "مصادر الصور", creditsTxt: "الصور ديال الموقع من Unsplash، تحت رخصة Unsplash (استعمال تجاري حر). رسومات الكوكات من تصميم Wa9i.", creditsOpen: "شوف على Unsplash",
       notFound: "الصفحة غير موجودة", eOrder: "ما تصيفطش الطلب. عاود جرب ولا كتب لينا على واتساب.", eRate: "بزاف ديال الطلبات بهاد الرقم. جرب من بعد ساعة ولا كتب لينا على واتساب.", eStock: "شي منتج ما بقاش متوفر بهاد الكمية.",
       lowStock: "باقي غير {n} فالستوك", outStock: "نفذ من المخزون", feat: ["حواف مرتفعة كتحمي الشاشة والكاميرات", "زوايا مقواة ضد الطيحات", "أزرار دقيقة وفتحات مضبوطة", "متوافقة مع الشحن اللاسلكي"],
       cartLabel: "السلة", close: "إغلاق", langLabel: "تغيير اللغة",
@@ -314,12 +320,12 @@
     const zbg = `<svg class="zellige-bg" width="100%" height="100%" aria-hidden="true"><defs>${patternDefs("zbg", "zellige", "#0c1f1a")}</defs><rect width="100%" height="100%" fill="url(#zbg)"/></svg>`;
     return `<section class="hero"><div class="wrap">
       <div class="slider" id="slider" aria-roledescription="carrousel">
-        <div class="slide s1 on" aria-roledescription="diapositive">${zbg}<div><span class="slide-kicker">${t("s1k")}</span><h1>${t("s1t")}</h1><p>${t("s1p")}</p><a class="btn btn-gold" href="#/collection/zellige">${t("shopNow")}</a></div>
+        <div class="slide s1 on" aria-roledescription="diapositive"><img class="slide-bg" src="/assets/photos/hero-maroc.webp" alt="" width="1400" height="760" decoding="async">${zbg}<div><span class="slide-kicker">${t("s1k")}</span><h1>${t("s1t")}</h1><p>${t("s1p")}</p><a class="btn btn-gold" href="#/collection/zellige">${t("shopNow")}</a></div>
           <div class="slide-art">${art([demoP("najma", "iPhone 17 Pro", "#b91c1c"), demoP("zellige", "iPhone 18 Pro Max", "#0e7a5f"), demoP("amazigh", "Galaxy S26 Ultra", "#f2b33d")])}</div></div>
         <div class="slide s2" aria-roledescription="diapositive"><div><span class="slide-kicker">${t("s2k")}</span><h2>${t("s2t")}</h2><p>${t("s2p")}</p><a class="btn btn-gold" href="#/collection/clear">${t("shopNow")}</a></div>
-          <div class="slide-art">${art([demoP("frost", "iPhone 18 Pro", "#86efac"), demoP("clear", "iPhone 18 Pro Max", "#cfe3ee"), demoP("frost", "iPhone 17 Pro Max", "#fda4af")])}</div></div>
+          <div class="slide-photo"><img src="/assets/photos/hero-magsafe.webp" alt="${t("cT")}" width="760" height="760" loading="lazy" decoding="async"></div></div>
         <div class="slide s3" aria-roledescription="diapositive"><div><span class="slide-kicker">${t("s3k")}</span><h2>${t("s3t")}</h2><p>${t("s3p")}</p><a class="btn btn-gold" href="#/collection/cuir">${t("shopNow")}</a></div>
-          <div class="slide-art">${art([demoP("wallet", "Galaxy S26 Ultra", "#7f1d1d"), demoP("leather", "iPhone 18 Pro Max", "#7c4a21"), demoP("leather", "Pixel 10 Pro", "#2f4a3a")])}</div></div>
+          <div class="slide-photo"><img src="/assets/photos/hero-cuir.webp" alt="${t("cC")}" width="760" height="760" loading="lazy" decoding="async"></div></div>
         <div class="dots" role="tablist">${[0, 1, 2].map((i) => `<button type="button" aria-label="${i + 1}" aria-current="${i === 0}" data-dot="${i}"></button>`).join("")}</div>
       </div>
       <div class="trust">
@@ -335,12 +341,20 @@
     <section class="section"><div class="wrap">
       <div class="sec-head"><h2>${t("collections")}</h2></div>
       <div class="collections">
-        <a class="coll coll-zellige" href="#/collection/zellige">${caseSVG(byId["zellige-iphone-17-pro"], "#0e7a5f")}<b>${t("cZ")}</b><span>${t("cZs")}</span></a>
-        <a class="coll coll-cuir" href="#/collection/cuir">${caseSVG(byId["leather-iphone-18-pro-max"], "#7c4a21")}<b>${t("cC")}</b><span>${t("cCs")}</span></a>
-        <a class="coll coll-clear" href="#/collection/clear">${caseSVG(byId["clear-iphone-18-pro-max"], "#cfe3ee")}<b>${t("cT")}</b><span>${t("cTs")}</span></a>
-        <a class="coll coll-armor" href="#/collection/armor">${caseSVG(byId["armor-galaxy-s26-ultra"], "#9a3412")}<b>${t("cA")}</b><span>${t("cAs")}</span></a>
+        <a class="coll coll-zellige" href="#/collection/zellige"><img class="coll-img" src="/assets/photos/coll-zellige.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cZ")}</b><span>${t("cZs")}</span></a>
+        <a class="coll coll-cuir" href="#/collection/cuir"><img class="coll-img" src="/assets/photos/coll-cuir.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cC")}</b><span>${t("cCs")}</span></a>
+        <a class="coll coll-clear" href="#/collection/clear"><img class="coll-img" src="/assets/photos/coll-clear.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cT")}</b><span>${t("cTs")}</span></a>
+        <a class="coll coll-armor" href="#/collection/armor"><img class="coll-img" src="/assets/photos/coll-armor.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cA")}</b><span>${t("cAs")}</span></a>
       </div>
     </div></section>
+    <section class="section"><div class="wrap"><div class="inspire">
+      <div class="inspire-txt"><span class="slide-kicker">${t("insK")}</span><h2>${t("insT")}</h2><p>${t("insP")}</p><a class="btn btn-gold" href="#/collection/zellige">${t("insCta")}</a></div>
+      <div class="inspire-grid">
+        <figure class="tall"><img src="/assets/photos/maroc-koutoubia.webp" alt="${t("phKoutoubia")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phKoutoubia")}</figcaption></figure>
+        <figure><img src="/assets/photos/maroc-medersa.webp" alt="${t("phMedersa")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phMedersa")}</figcaption></figure>
+        <figure><img src="/assets/photos/maroc-fountain.webp" alt="${t("phFountain")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phFountain")}</figcaption></figure>
+        <figure class="wide"><img src="/assets/photos/maroc-souk.webp" alt="${t("phSouk")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phSouk")}</figcaption></figure>
+      </div></div></div></section>
     <section class="section"><div class="wrap"><div class="sec-head"><h2>${t("best")}</h2><a href="#/c/iphone">${t("seeAll")} →</a></div>${grid(best)}</div></section>
     <section class="section"><div class="wrap"><div class="sec-head"><h2>${t("newIn")}</h2><a href="#/c/accessoires">${t("accessories")} →</a></div>${grid(fresh)}</div></section>`;
   };
@@ -504,9 +518,12 @@
       <div class="actions"><a class="btn btn-primary" href="${esc(o.wa)}" target="_blank" rel="noopener">${t("thanksWa")}</a><a class="btn btn-ghost" href="#/">${t("backShop")}</a></div>
       <p style="font-size:13px;margin-top:20px">${t("demo")}</p></div></div>`;
   };
-  views.contact = () => `<div class="wrap">${crumbs([[null, t("contact")]])}<h1 class="page-title">${t("ctTitle")}</h1>
+  views.contact = () => `<div class="wrap">${crumbs([[null, t("contact")]])}<div class="banner"><img src="/assets/photos/contact-cases.webp" alt="" width="1000" height="560" decoding="async"><h1 class="page-title">${t("ctTitle")}</h1></div>
     <div class="contact"><div class="box"><p>${t("ctTxt")}</p><a class="btn btn-primary" href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Salam Wa9i")}" target="_blank" rel="noopener">${t("ctWa")}</a></div>
     <div class="box"><dl><div><dt>${t("ctHours")}</dt><dd>${t("ctHoursV")}</dd></div><div><dt>${t("ctDel")}</dt><dd>${t("ctDelV")}</dd></div><div><dt>${t("ctSwap")}</dt><dd>${t("ctSwapV")}</dd></div></dl></div></div></div>`;
+  const PHOTO_CREDITS = [["hero-maroc","1771148886150-fe1784951a68"],["hero-magsafe","1692780256774-198bc0a3bbf0"],["hero-cuir","1760443728263-e77345f61eb8"],["coll-zellige","1762380368368-dc3fe398be04"],["coll-clear","1775544265981-9db0ea58687f"],["coll-cuir","1711033312367-247626a984d1"],["coll-armor","1623393937972-4b3102ba8c23"],["maroc-koutoubia","1597212618440-806262de4f6b"],["maroc-medersa","1778752780920-3f8bc84114b4"],["maroc-fountain","1539020140153-e479b8c22e70"],["maroc-souk","1580746738099-1cb74f972feb"],["contact-cases","1535157412991-2ef801c1748b"]];
+  views.credits = () => `<div class="wrap">${crumbs([[null, t("credits")]])}<h1 class="page-title">${t("credits")}</h1><p class="lead">${t("creditsTxt")}</p>
+    <div class="credits">${PHOTO_CREDITS.map(([f, id]) => `<a class="credit-item" href="https://unsplash.com/photos/${id.split("-").pop()}" target="_blank" rel="noopener"><img src="/assets/photos/${f}.webp" alt="" loading="lazy" width="320" height="320"><span>${t("creditsOpen")} ↗</span></a>`).join("")}</div></div>`;
   views.notFound = () => `<div class="wrap"><div class="empty" style="margin:40px 0"><p><b>${t("notFound")}</b></p><a class="btn btn-primary" href="#/">${t("continue")}</a></div></div>`;
 
   /* ---------- Router ---------- */
@@ -524,6 +541,7 @@
       case "merci": return ["thanks", views.thanks()];
       case "contact": return ["contact", views.contact(), "contact"];
       case "recherche": return ["search", views.search(rest)];
+      case "credits": return ["credits", views.credits()];
       default: return ["404", views.notFound()];
     }
   }
