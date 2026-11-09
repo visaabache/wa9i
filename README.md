@@ -43,3 +43,6 @@ The mark is a phone case shaped like a Moroccan horseshoe arch. An 8-point star 
 | `wa9i-mark-gold.svg` | Gold version of the mark |
 | `wa9i-icon.svg`, `wa9i-icon-512.png`, `wa9i-icon-1024.png` | App icon |
 | `wa9i-profile-1080.png` | Instagram, Facebook, TikTok and WhatsApp profile picture (fits the circle crop) |
+
+### Africa mosaic version (`wa9i-afrique-*`)
+A second logo: a black phone case with the map of Africa filled with a mosaic of Moroccan patterns (zellige stars, Amazigh diamonds, rug stripes, dots) in emerald, saffron, terracotta, majorelle blue and cream. A gold star marks Morocco, and the Amazigh ⵣ (Yaz) sits beside the camera. Files: `wa9i-afrique-mark`, `-logo`, `-logo-dark`, `-logo-stacked` and `-icon` (SVG + PNG), `wa9i-afrique-icon-1024.png` and `wa9i-afrique-profile-1080.png`.
