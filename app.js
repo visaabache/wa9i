@@ -43,6 +43,11 @@
       codTitle: "Commander en 30 secondes", codSub: "Remplissez le formulaire, on vous appelle pour confirmer. Vous payez à la livraison.",
       fName: "Nom complet", fCity: "Ville", fCityPh: "Choisissez votre ville", fAddress: "Adresse", fPhone: "Téléphone", fNote: "Remarque (facultatif)",
       orderBtn: "Confirmer la commande", total: "Total", nPay: "Paiement à la livraison", nCall: "Appel de confirmation", nSwap: "Échange 7 jours",
+      youSave: "Vous économisez {n}", payNote: "Paiement à la livraison, en espèces. Aucun paiement en ligne.", etaTitle: "Livraison estimée :", etaCut: "Commandez dans {t} pour un envoi aujourd’hui", etaNext: "Expédié dès le prochain jour ouvré",
+      addCart: "Ajouter au panier", buyNow: "Commander maintenant", stickyOrder: "Commander", askWa: "Une question sur ce produit ? WhatsApp", waAsk: "Bonjour, j’ai une question sur :",
+      tQuality: "Qualité contrôlée", tQualityS: "Chaque coque vérifiée avant l’envoi", zoom: "Agrandir la photo", photoN: "Photo {i} sur {n}", close: "Fermer", prev: "Précédent", next: "Suivant",
+      dCompat: "Compatibilité", compatTxt: "Conçue pour l’{m} : découpes exactes pour les caméras, les boutons et le port de charge. Vérifiez votre modèle dans Réglages → Général → Informations.",
+      dReturns: "Échanges & garantie", dReturnsTxt: "Mauvais modèle ou défaut ? Vous avez 7 jours pour l’échanger, gratuitement, si la coque n’a pas été utilisée. Écrivez-nous sur WhatsApp avec votre numéro de commande.",
       dDesc: "Description", noProducts: "Les produits arrivent bientôt.", dFeat: "Caractéristiques", dShip: "Livraison & paiement", dShipTxt: "Livraison en 24 h à Casablanca, Rabat et Marrakech, 48–72 h ailleurs. Vous payez en espèces au livreur. Livraison offerte dès 2 articles.",
       related: "Vous aimerez aussi",
       cartEmpty: "Votre panier est vide.", continue: "Continuer mes achats", viewCart: "Voir le panier", checkout: "Passer la commande",
@@ -82,6 +87,11 @@
       codTitle: "اطلب ف 30 ثانية", codSub: "عمر الفورمولير، غادي نعيطو ليك نأكدو. كتخلص ملي توصلك.",
       fName: "الاسم الكامل", fCity: "المدينة", fCityPh: "اختار المدينة", fAddress: "العنوان", fPhone: "رقم الهاتف", fNote: "ملاحظة (اختياري)",
       orderBtn: "أكد الطلب", total: "المجموع", nPay: "الدفع عند الاستلام", nCall: "مكالمة تأكيد", nSwap: "تبديل 7 أيام",
+      youSave: "كتربح {n}", payNote: "الدفع عند الاستلام، كاش. ما كاين حتى دفع أونلاين.", etaTitle: "التوصيل المتوقع:", etaCut: "اطلب خلال {t} باش يتصيفط اليوم", etaNext: "كيتصيفط فأول يوم خدمة جاي",
+      addCart: "زيد للسلة", buyNow: "اطلب دابا", stickyOrder: "اطلب", askWa: "عندك سؤال على هاد المنتج؟ واتساب", waAsk: "السلام، عندي سؤال على:",
+      tQuality: "جودة مضمونة", tQualityS: "كل كوك كيتشاف قبل ما يتصيفط", zoom: "كبر الصورة", photoN: "صورة {i} من {n}", close: "إغلاق", prev: "السابق", next: "التالي",
+      dCompat: "التوافق", compatTxt: "مصممة ل{m}: فتحات مضبوطة للكاميرات والأزرار ومدخل الشحن. تأكد من الموديل ديالك فالإعدادات ← عام ← حول.",
+      dReturns: "التبديل والضمان", dReturnsTxt: "موديل غالط ولا فيه عيب؟ عندك 7 أيام باش تبدلو مجاناً إلا ما استعملتيهش. كتب لينا على واتساب مع رقم الطلب.",
       dDesc: "الوصف", noProducts: "المنتجات جايين قريباً.", dFeat: "المميزات", dShip: "التوصيل والدفع", dShipTxt: "التوصيل ف 24 ساعة للدار البيضاء والرباط ومراكش، و48–72 ساعة لباقي المدن. كتخلص كاش للموزع. التوصيل مجاني ابتداءً من منتجين.",
       related: "غادي يعجبك تاني",
       cartEmpty: "السلة خاوية.", continue: "كمل التسوق", viewCart: "شوف السلة", checkout: "إتمام الطلب",
@@ -428,75 +438,177 @@
     return listing({ title: q, crumb: [[null, q]], list, q });
   };
 
+  // Delivery estimate in Morocco time: orders before 16:00 (Mon–Sat) leave the same day, arrive in 1–3 working days.
+  function deliveryInfo() {
+    const tz = "Africa/Casablanca", now = new Date();
+    const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: tz, weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(now).map((x) => [x.type, x.value]));
+    const h = +parts.hour % 24, m = +parts.minute, sunday = parts.weekday === "Sun";
+    const sameDay = !sunday && h < 16;
+    const addWorking = (d, n) => { const x = new Date(d); while (n > 0) { x.setDate(x.getDate() + 1); if (x.getDay() !== 0) n--; } return x; };
+    const ship = sameDay ? now : addWorking(now, 1);
+    const fmt = (d) => d.toLocaleDateString(lang === "ar" ? "ar-MA" : "fr-FR", { weekday: "short", day: "numeric", month: "short", timeZone: tz });
+    const left = sameDay ? (16 * 60) - (h * 60 + m) : 0;
+    return { from: fmt(addWorking(ship, 1)), to: fmt(addWorking(ship, 3)), left: left > 0 ? `${Math.floor(left / 60)} h ${String(left % 60).padStart(2, "0")} min` : "" };
+  }
+
   views.product = ([id]) => {
     const p = byId[id]; if (!p || p.hidden) return views.notFound();
     let color = p.colors[0], view = 0;
     const own = !!p.custom, pics = own ? p.images : [];
-    const off = Math.round((1 - p.price / p.old) * 100);
+    const off = p.old > p.price ? Math.round((1 - p.price / p.old) * 100) : 0;
     const b = BRANDS.find((x) => x.id === p.brand);
-    const siblings = b ? b.models.map((m) => byId[`${p.design}-${slug(m)}`]).filter(Boolean) : [];
-    const related = PRODUCTS.filter((x) => x.id !== p.id && (p.accessory ? x.accessory : x.modelSlug === p.modelSlug)).sort((a, c) => c.pop - a.pop).slice(0, 4);
-    const stars = "★★★★★".slice(0, Math.round(p.rating)) + "☆☆☆☆☆".slice(0, 5 - Math.round(p.rating));
-    return { html: `<div class="wrap">${crumbs(p.model ? [[`#/c/${p.brand}`, brandName(p.brand)], [`#/c/${p.brand}/${p.modelSlug}`, p.model], [null, L(p.name)]] : [[`#/c/accessoires`, t("accessories")], [null, L(p.name)]])}
+    const siblings = b && p.design ? b.models.map((m) => byId[`${p.design}-${slug(m)}`]).filter((x) => x && !x.hidden) : [];
+    const related = PRODUCTS.filter((x) => x.id !== p.id && (p.accessory ? x.accessory : x.modelSlug === p.modelSlug || x.brand === p.brand)).sort((a, c) => c.pop - a.pop).slice(0, 10);
+    const stars = "★★★★★".slice(0, Math.round(p.rating || 0)) + "☆☆☆☆☆".slice(0, 5 - Math.round(p.rating || 0));
+    // Gallery slides: uploaded photos; or the mockup photo + the drawing; or the drawing from two angles
+    const slides = own ? (pics.length ? pics.map((_, i) => () => photoOf(p, i).replace('loading="lazy"', `loading="${i ? "lazy" : "eager"}"`)) : [() => productArt(p, color)])
+      : hasMockup(p) ? [() => productArt(p, color, { eager: true }), () => caseSVG(p, color)]
+      : p.accessory ? [() => caseSVG(p, color)] : [() => caseSVG(p, color), () => `<span class="tilt">${caseSVG(p, color)}</span>`];
+    const isPhoto = (i) => (own && pics.length) || (hasMockup(p) && i === 0);
+    const d = deliveryInfo();
+    const stockLow = Number.isFinite(p.stock) && p.stock > 0 && p.stock <= 5;
+    const waText = encodeURIComponent(`${t("waAsk")} ${productTitle(p)} (${location.origin}/#/p/${p.id})`);
+    const IC = {
+      cash: ICON.cash, truck: ICON.truck, swap: ICON.swap,
+      shield: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>`,
+      wa: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>`,
+      zoom: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg>`,
+      prev: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>`, next: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>`,
+      close: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
+    };
+    const crumb = p.model ? [[`#/c/${p.brand}`, brandName(p.brand)], [`#/c/${p.brand}/${p.modelSlug}`, p.model], [null, L(p.name)]] : [[`#/c/accessoires`, t("accessories")], [null, L(p.name)]];
+    const descHtml = own && L(p.desc) ? L(p.desc).split(/\n{2,}/).map((para) => `<p>${esc(para).replace(/\n/g, "<br>")}</p>`).join("") : "";
+    return { html: `<div class="wrap pdp-wrap">${crumbs(crumb)}
       <div class="pdp">
-        <div class="gallery">
-          <div class="g-main${hasMockup(p) || pics.length ? " has-photo" : ""}" id="gMain">${productArt(p, color, { eager: true })}</div>
-          ${own ? (pics.length > 1 ? `<div class="g-thumbs" id="gThumbs">${pics.map((m, i) => `<button type="button" aria-pressed="${i === 0}" data-view="${i}" aria-label="Photo ${i + 1}">${photoOf(p, i)}</button>`).join("")}</div>` : "")
-            : p.accessory ? "" : `<div class="g-thumbs" id="gThumbs">${[0, 1].map((i) => `<button type="button" aria-pressed="${i === 0}" data-view="${i}" aria-label="Vue ${i + 1}">${i === 0 ? productArt(p, color) : caseSVG(p, color)}</button>`).join("")}</div>`}
+        <div class="gallery${slides.length > 1 ? " multi" : ""}">
+          ${slides.length > 1 ? `<div class="g-rail" id="gThumbs" role="tablist">${slides.map((s, i) => `<button type="button" role="tab" aria-selected="${i === 0}" data-view="${i}" aria-label="${t("photoN", { i: i + 1, n: slides.length })}" class="${isPhoto(i) ? "is-photo" : ""}">${s()}</button>`).join("")}</div>` : ""}
+          <div class="g-stage">
+            <div class="g-track" id="gTrack">${slides.map((s, i) => `<figure class="g-slide${isPhoto(i) ? " is-photo" : ""}" data-i="${i}">${s()}</figure>`).join("")}</div>
+            ${off || p.badge ? `<div class="g-badges">${off ? `<span class="g-badge">-${off}%</span>` : ""}${p.badge ? `<span class="g-badge alt">${esc(L(p.badge))}</span>` : ""}</div>` : ""}
+            <button type="button" class="g-zoom" id="gZoom" aria-label="${t("zoom")}">${IC.zoom}</button>
+            ${slides.length > 1 ? `<span class="g-count" id="gCount">1 / ${slides.length}</span><div class="g-dots" id="gDots">${slides.map((_, i) => `<i${i ? "" : ' class="on"'}></i>`).join("")}</div>` : ""}
+          </div>
         </div>
         <div class="pdp-info">
-          <span class="card-model">${esc(p.model || t("accessories"))}</span>
-          <h1>${esc(productTitle(p))}</h1>
-          ${p.reviews ? `<div class="rating"><span class="stars" aria-hidden="true">${stars}</span><span>${p.rating.toFixed(1)} · ${p.reviews} ${t("reviews")}</span></div>` : ""}
-          <div class="pdp-price"><b>${money(p.price)}</b>${p.old > p.price ? `<s>${money(p.old)}</s><span class="save">-${off}%</span>` : ""}</div>
-          ${p.colors.length > 1 ? `<p class="opt-label">${t("colour")} <span id="colorName">${esc(colorName(p, color))}</span></p><div class="colors" id="colors">${p.colors.map((c, i) => `<button type="button" style="background:${c}" aria-pressed="${i === 0}" data-color="${c}" aria-label="${t("colour")} : ${esc(colorName(p, c))}" title="${esc(colorName(p, c))}"></button>`).join("")}</div>` : ""}
-          ${siblings.length > 1 ? `<p class="opt-label">${t("forModel")}</p><div class="models">${siblings.map((s) => `<a href="#/p/${s.id}"${s.id === p.id ? ' aria-current="page"' : ""}>${s.model}</a>`).join("")}</div>` : ""}
-          <p class="stock${p.stock === 0 ? " out" : ""}">${p.stock === 0 ? t("outStock") : Number.isFinite(p.stock) && p.stock <= 5 ? t("lowStock", { n: p.stock }) : t("inStock")}</p>
-          <div class="buy-row">
-            <div class="qty"><button type="button" data-q="-1" aria-label="-">−</button><input id="qty" type="number" min="1" max="20" value="1" aria-label="${t("qty")}"><button type="button" data-q="1" aria-label="+">+</button></div>
-            <button type="button" class="btn btn-ghost" id="addBtn">${t("add")}</button>
+          <p class="eyebrow"><span>Wa9i</span>${esc(p.model || t("accessories"))}</p>
+          <h1>${esc(L(p.name))}</h1>
+          ${p.reviews ? `<a class="rating" href="#reviews"><span class="stars" aria-hidden="true">${stars}</span><b>${p.rating.toFixed(1)}</b><span>· ${p.reviews} ${t("reviews")}</span></a>` : ""}
+          <div class="price-card">
+            <div class="pdp-price"><b>${money(p.price)}</b>${off ? `<s>${money(p.old)}</s>` : ""}</div>
+            ${off ? `<span class="save">${t("youSave", { n: money(p.old - p.price) })} · -${off}%</span>` : ""}
+            <p class="price-note">${ICON.cash}${t("payNote")}</p>
           </div>
+          ${p.colors.length > 1 ? `<div class="opt"><p class="opt-label">${t("colour")} : <span id="colorName">${esc(colorName(p, color))}</span></p><div class="colors" id="colors">${p.colors.map((c, i) => `<button type="button" style="--sw:${c}" aria-pressed="${i === 0}" data-color="${c}" aria-label="${t("colour")} : ${esc(colorName(p, c))}" title="${esc(colorName(p, c))}"><i></i></button>`).join("")}</div></div>` : ""}
+          ${siblings.length > 1 ? `<div class="opt"><p class="opt-label">${t("forModel")} : <span>${esc(p.model)}</span></p><div class="models">${siblings.map((s) => `<a href="#/p/${s.id}"${s.id === p.id ? ' aria-current="page"' : ""}>${s.model}</a>`).join("")}</div></div>` : ""}
+          <div class="avail">
+            <p class="stock${p.stock === 0 ? " out" : stockLow ? " low" : ""}">${p.stock === 0 ? t("outStock") : stockLow ? t("lowStock", { n: p.stock }) : t("inStock")}</p>
+            ${stockLow ? `<div class="stock-bar" aria-hidden="true"><i style="width:${Math.max(12, p.stock * 18)}%"></i></div>` : ""}
+          </div>
+          ${p.stock === 0 ? "" : `<div class="eta">${IC.truck}<div><b>${t("etaTitle")} ${d.from} – ${d.to}</b><span>${d.left ? t("etaCut", { t: `<strong>${d.left}</strong>` }) : t("etaNext")}</span></div></div>`}
+          <div class="buy-row" id="buyRow">
+            <div class="qty"><button type="button" data-q="-1" aria-label="-">−</button><input id="qty" type="number" min="1" max="20" value="1" aria-label="${t("qty")}"><button type="button" data-q="1" aria-label="+">+</button></div>
+            <button type="button" class="btn btn-primary" id="addBtn">${t("addCart")}</button>
+          </div>
+          <button type="button" class="btn btn-gold btn-block btn-lg" id="buyNow">${t("buyNow")}</button>
+          <a class="ask-wa" href="https://wa.me/${CONFIG.whatsapp}?text=${waText}" target="_blank" rel="noopener">${IC.wa}${t("askWa")}</a>
+          <ul class="perks">
+            <li>${IC.cash}<span><b>${t("tr1")}</b>${t("tr1s")}</span></li>
+            <li>${IC.truck}<span><b>${t("tr2")}</b>${t("tr2s")}</span></li>
+            <li>${IC.swap}<span><b>${t("tr3")}</b>${t("tr3s")}</span></li>
+            <li>${IC.shield}<span><b>${t("tQuality")}</b>${t("tQualityS")}</span></li>
+          </ul>
           <form class="cod" id="order" novalidate>
             <h2>${ICON.bolt}${t("codTitle")}</h2>
             <p>${t("codSub")}</p>
             ${codFields("o-")}
             <div class="cod-sum"><span>${t("total")} <small id="codShip"></small></span><b id="codTotal"></b></div>
-            <button class="btn btn-gold btn-block" type="submit">${t("orderBtn")}</button>
+            <button class="btn btn-gold btn-block btn-lg" type="submit">${t("orderBtn")}</button>
             <div class="cod-note"><span>${t("nPay")}</span><span>${t("nCall")}</span><span>${t("nSwap")}</span></div>
           </form>
           <div class="acc">
-            ${own ? (L(p.desc) ? `<details open><summary>${t("dDesc")}</summary>${L(p.desc).split(/\n{2,}/).map((para) => `<p>${esc(para).replace(/\n/g, "<br>")}</p>`).join("")}</details>` : "")
-              : `<details open><summary>${t("dFeat")}</summary><ul>${T[lang].feat.map((f) => `<li>${f}</li>`).join("")}</ul></details>`}
-            <details><summary>${t("dShip")}</summary><p>${t("dShipTxt")}</p></details>
+            ${own ? (descHtml ? `<details open><summary>${t("dDesc")}</summary><div class="acc-body">${descHtml}</div></details>` : "")
+              : `<details open><summary>${t("dFeat")}</summary><div class="acc-body"><ul class="ticks">${T[lang].feat.map((f) => `<li>${f}</li>`).join("")}</ul></div></details>`}
+            ${p.model ? `<details${descHtml || !own ? "" : " open"}><summary>${t("dCompat")}</summary><div class="acc-body"><p>${t("compatTxt", { m: esc(p.model) })}</p></div></details>` : ""}
+            <details><summary>${t("dShip")}</summary><div class="acc-body"><p>${t("dShipTxt")}</p></div></details>
+            <details><summary>${t("dReturns")}</summary><div class="acc-body"><p>${t("dReturnsTxt")}</p></div></details>
           </div>
         </div>
       </div>
-      ${related.length ? `<section class="section"><div class="sec-head"><h2>${t("related")}</h2></div>${grid(related)}</section>` : ""}
+      ${related.length ? `<section class="section related"><div class="sec-head"><h2>${t("related")}</h2><div class="rel-nav"><button type="button" class="icon-btn" data-rel="-1" aria-label="${t("prev")}">${IC.prev}</button><button type="button" class="icon-btn" data-rel="1" aria-label="${t("next")}">${IC.next}</button></div></div><div class="rel-track" id="relTrack">${related.map(card).join("")}</div></section>` : ""}
+    </div>
+    <div class="sticky-buy" id="stickyBuy" aria-hidden="true">
+      <span class="sb-img">${slides[0]()}</span>
+      <span class="sb-txt"><b>${esc(L(p.name))}</b><span>${money(p.price)}${off ? ` <s>${money(p.old)}</s>` : ""}</span></span>
+      <button type="button" class="btn btn-gold" id="stickyOrder" tabindex="-1">${t("stickyOrder")}</button>
     </div>`,
       after() {
-        const main = $("#gMain"), qtyEl = $("#qty");
-        const paint = () => {
-          if (own) {
-            if (!pics.length) return;
-            main.innerHTML = photoOf(p, view).replace('loading="lazy"', 'loading="eager"');
-            $$("#gThumbs button").forEach((b2, i) => b2.setAttribute("aria-pressed", i === view));
-            return;
-          }
-          const photo = hasMockup(p) && view === 0;
-          main.innerHTML = photo ? productArt(p, color, { eager: true }) : caseSVG(p, color);
-          main.classList.toggle("has-photo", photo); main.classList.toggle("side-v", view === 1 && !hasMockup(p));
-          $$("#gThumbs button").forEach((b2, i) => { b2.innerHTML = i === 0 ? productArt(p, color) : caseSVG(p, color); b2.setAttribute("aria-pressed", i === view); });
+        const track = $("#gTrack"), qtyEl = $("#qty"), slidesEl = () => $$(".g-slide", track);
+        const go = (i, smooth = true) => {
+          view = Math.max(0, Math.min(slides.length - 1, i));
+          track.scrollTo({ left: (document.dir === "rtl" ? -1 : 1) * view * track.clientWidth, behavior: smooth && !matchMedia("(prefers-reduced-motion: reduce)").matches ? "smooth" : "auto" });
+          mark();
         };
+        const mark = () => {
+          $$("#gThumbs button").forEach((b2, i) => b2.setAttribute("aria-selected", i === view));
+          $$("#gDots i").forEach((x, i) => x.classList.toggle("on", i === view));
+          const c = $("#gCount"); if (c) c.textContent = `${view + 1} / ${slides.length}`;
+        };
+        track.addEventListener("scroll", () => { const i = Math.round(Math.abs(track.scrollLeft) / track.clientWidth); if (i !== view) { view = i; mark(); } }, { passive: true });
+        $$("#gThumbs button").forEach((btn) => btn.addEventListener("click", () => go(+btn.dataset.view)));
+        const repaint = () => { slidesEl().forEach((f, i) => { f.innerHTML = slides[i](); }); $$("#gThumbs button").forEach((b2, i) => { b2.innerHTML = slides[i](); }); const sb = $(".sb-img"); if (sb) sb.innerHTML = slides[0](); bindZoom(); };
+        // Hover zoom on photos (desktop)
+        const bindZoom = () => slidesEl().forEach((f) => {
+          if (!f.classList.contains("is-photo") || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+          const img = f.querySelector("img"); if (!img) return;
+          f.onmousemove = (e) => { const r = f.getBoundingClientRect(); img.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`; img.style.transform = "scale(1.8)"; };
+          f.onmouseleave = () => { img.style.transform = ""; };
+        });
+        bindZoom();
+        // Lightbox
+        const openLightbox = () => {
+          const lb = document.createElement("div"); lb.className = "lightbox"; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true"); lb.setAttribute("aria-label", productTitle(p));
+          let i = view;
+          const paintLb = () => { lb.querySelector(".lb-stage").innerHTML = slides[i](); lb.querySelector(".lb-count").textContent = `${i + 1} / ${slides.length}`; };
+          lb.innerHTML = `<button type="button" class="lb-close" aria-label="${t("close")}">${IC.close}</button>${slides.length > 1 ? `<button type="button" class="lb-nav prev" aria-label="${t("prev")}">${IC.prev}</button><button type="button" class="lb-nav next" aria-label="${t("next")}">${IC.next}</button>` : ""}<div class="lb-stage"></div><span class="lb-count"></span>`;
+          document.body.append(lb); document.body.style.overflow = "hidden"; paintLb();
+          const close = () => { lb.remove(); document.body.style.overflow = ""; document.removeEventListener("keydown", key); go(i, false); $("#gZoom").focus(); };
+          const step = (n) => { i = (i + n + slides.length) % slides.length; paintLb(); };
+          const key = (e) => { if (e.key === "Escape") close(); if (e.key === "ArrowRight") step(document.dir === "rtl" ? -1 : 1); if (e.key === "ArrowLeft") step(document.dir === "rtl" ? 1 : -1); };
+          document.addEventListener("keydown", key);
+          lb.querySelector(".lb-close").onclick = close; lb.onclick = (e) => { if (e.target === lb) close(); };
+          lb.querySelector(".prev")?.addEventListener("click", () => step(-1)); lb.querySelector(".next")?.addEventListener("click", () => step(1));
+          let x0 = null; lb.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+          lb.addEventListener("touchend", (e) => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1); x0 = null; });
+          lb.querySelector(".lb-close").focus();
+        };
+        $("#gZoom").addEventListener("click", openLightbox);
+        track.addEventListener("click", (e) => { if (e.target.closest(".g-slide")) openLightbox(); });
+        // Options, quantity, totals
         const qty = () => Math.max(1, Math.min(20, parseInt(qtyEl.value, 10) || 1));
         const sum = () => { const q = qty(); const ship = shippingCost(q); $("#codTotal").textContent = money(p.price * q + ship); $("#codShip").textContent = `(${t("shipping")} : ${ship ? money(ship) : t("free")})`; };
-        $$("#colors button").forEach((btn) => btn.addEventListener("click", () => { color = btn.dataset.color; $$("#colors button").forEach((x) => x.setAttribute("aria-pressed", x === btn)); const cn = $("#colorName"); if (cn) cn.textContent = colorName(p, color); paint(); }));
-        $$("#gThumbs button").forEach((btn) => btn.addEventListener("click", () => { view = +btn.dataset.view; paint(); }));
+        $$("#colors button").forEach((btn) => btn.addEventListener("click", () => { color = btn.dataset.color; $$("#colors button").forEach((x) => x.setAttribute("aria-pressed", x === btn)); const cn = $("#colorName"); if (cn) cn.textContent = colorName(p, color); if (!own) repaint(); }));
         $$("[data-q]").forEach((btn) => btn.addEventListener("click", () => { qtyEl.value = Math.max(1, Math.min(20, qty() + +btn.dataset.q)); sum(); }));
         qtyEl.addEventListener("input", sum);
         $("#addBtn").addEventListener("click", () => addToCart(p.id, color, qty()));
-        if (p.stock === 0) { $("#addBtn").disabled = true; $("#order [type=submit]").disabled = true; }
+        const toForm = () => { $("#order").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); setTimeout(() => $("#o-name").focus({ preventScroll: true }), 450); };
+        $("#buyNow").addEventListener("click", toForm);
+        $("#stickyOrder").addEventListener("click", toForm);
+        if (p.stock === 0) { ["#addBtn", "#buyNow", "#stickyOrder", "#order [type=submit]"].forEach((s) => { const el = $(s); if (el) el.disabled = true; }); }
         $("#order").addEventListener("submit", (e) => { e.preventDefault(); placeOrder(e.target, [{ id: p.id, color, qty: qty() }]); });
         sum();
+        // Sticky order bar (phones): shown whenever the buy buttons are off screen, hidden while they or the order form are visible
+        const sb = $("#stickyBuy");
+        if ("IntersectionObserver" in window && sb) {
+          let buyVisible = true, formVisible = false;
+          const upd = () => { const on = !buyVisible && !formVisible; sb.classList.toggle("on", on); sb.setAttribute("aria-hidden", String(!on)); $("#stickyOrder").tabIndex = on ? 0 : -1; };
+          const io = new IntersectionObserver((es) => { es.forEach((e2) => { if (e2.target.id === "buyRow") buyVisible = e2.isIntersecting; else formVisible = e2.isIntersecting; }); upd(); });
+          io.observe($("#buyRow")); io.observe($("#order"));
+          const stop = () => { io.disconnect(); window.removeEventListener("hashchange", stop); };
+          window.addEventListener("hashchange", stop);
+        }
+        // Related carousel
+        const rel = $("#relTrack");
+        $$("[data-rel]").forEach((btn) => btn.addEventListener("click", () => rel.scrollBy({ left: (document.dir === "rtl" ? -1 : 1) * +btn.dataset.rel * rel.clientWidth * 0.8, behavior: "smooth" })));
       } };
   };
 
