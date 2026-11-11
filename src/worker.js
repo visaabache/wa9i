@@ -4,7 +4,10 @@
    - Admin API:   /api/admin/* (password login, signed session cookie)
    Storage: Workers KV (binding DATA). Keys:
      settings                 shop settings (JSON)
-     products                 admin overrides per product id: price, old price, stock, hidden
+     products                 admin overrides per generated product id: price, old price, stock, hidden
+     custom                   the shop owner's own products (JSON array), added from the admin
+     catalog                  { builtin: false } once the generated products are removed
+     media:<id>               an uploaded product photo (binary, metadata = content type)
      auth                     admin password hash, once changed from the admin (else the ADMIN_PASSWORD secret)
      order:<inverted time>:<ref>   one order (value = full order, metadata = summary for lists and stats)
      rl:… / login:…           rate-limit counters (expire on their own) */
@@ -46,11 +49,19 @@ const count = async (env, key) => parseInt(await env.DATA.get(key), 10) || 0;
 
 async function getSettings(env) { return { ...DEFAULT_SETTINGS, ...((await env.DATA.get("settings", "json")) || {}) }; }
 async function getOverrides(env) { return (await env.DATA.get("products", "json")) || {}; }
-function product(id, ov) {
-  const p = BY_ID[id]; if (!p) return null;
-  const o = ov[id] || {};
-  return { ...p, price: Number.isFinite(o.price) ? o.price : p.price, old: Number.isFinite(o.old) ? o.old : p.old, hidden: !!o.hidden, stock: Number.isFinite(o.stock) ? o.stock : null };
+async function getCustom(env) { return (await env.DATA.get("custom", "json")) || []; }
+async function loadCatalog(env) {
+  const [ov, custom, c] = await Promise.all([getOverrides(env), getCustom(env), env.DATA.get("catalog", "json")]);
+  return { ov, custom, builtin: !c || c.builtin !== false };
 }
+function product(id, cat) {
+  const c = cat.custom.find((x) => x.id === id);
+  if (c) return { ...c, hidden: !!c.hidden, stock: Number.isFinite(c.stock) ? c.stock : null };
+  const p = BY_ID[id]; if (!p) return null;
+  const o = cat.ov[id] || {};
+  return { ...p, price: Number.isFinite(o.price) ? o.price : p.price, old: Number.isFinite(o.old) ? o.old : p.old, hidden: !!o.hidden || !cat.builtin, stock: Number.isFinite(o.stock) ? o.stock : null };
+}
+const colorLabel = (p, hex, lang) => (p.colorLabels && p.colorLabels[hex] && (p.colorLabels[hex][lang] || p.colorLabels[hex].fr)) || CAT.colorName(hex, lang);
 const titleOf = (p, lang) => { const n = (p.name && (p.name[lang] || p.name.fr)) || p.id; return p.model ? `${n} — ${p.model}` : n; };
 const orderKey = (now, ref) => `order:${String(9999999999999 - now).padStart(13, "0")}:${ref}`;
 function summary(o) {
@@ -68,16 +79,16 @@ async function listOrders(env, limit = 1000) {
 }
 
 /* ---------- pricing (shared by the shop and demo orders) ---------- */
-function priceOrder(items, settings, ov, couponIn, lang) {
+function priceOrder(items, settings, cat, couponIn, lang) {
   const lines = [];
   for (const it of Array.isArray(items) ? items.slice(0, 20) : []) {
-    const p = product(String(it.id || ""), ov);
+    const p = product(String(it.id || ""), cat);
     const qty = clampInt(it.qty, 1, 20);
     if (!p || p.hidden || !qty) return { error: "item" };
-    const color = p.colors.includes(it.color) ? it.color : p.colors[0];
+    const color = p.colors.includes(it.color) ? it.color : p.colors[0] || "";
     const same = lines.find((l) => l.id === p.id && l.color === color);
     if (same) same.qty = Math.min(20, same.qty + qty);
-    else lines.push({ id: p.id, title: titleOf(p, lang), model: p.model || "", color, colorName: CAT.colorName(color, lang), qty, price: p.price });
+    else lines.push({ id: p.id, title: titleOf(p, lang), model: p.model || "", color, colorName: color ? colorLabel(p, color, lang) : "", qty, price: p.price });
   }
   if (!lines.length) return { error: "empty" };
   const n = lines.reduce((a, l) => a + l.qty, 0);
@@ -88,18 +99,22 @@ function priceOrder(items, settings, ov, couponIn, lang) {
   return { lines, subtotal, shipping, total: subtotal + shipping, coupon: couponOk ? code : "" };
 }
 async function changeStock(env, items, sign) {
-  const ov = await getOverrides(env); let changed = false;
+  const [ov, custom] = await Promise.all([getOverrides(env), getCustom(env)]); let ch1 = false, ch2 = false;
   for (const l of items) {
+    const c = custom.find((x) => x.id === l.id);
+    if (c) { if (Number.isFinite(c.stock)) { c.stock = Math.max(0, c.stock + sign * l.qty); ch2 = true; } continue; }
     const o = ov[l.id];
-    if (o && Number.isFinite(o.stock)) { o.stock = Math.max(0, o.stock + sign * l.qty); changed = true; }
+    if (o && Number.isFinite(o.stock)) { o.stock = Math.max(0, o.stock + sign * l.qty); ch1 = true; }
   }
-  if (changed) await env.DATA.put("products", JSON.stringify(ov));
+  if (ch1) await env.DATA.put("products", JSON.stringify(ov));
+  if (ch2) await env.DATA.put("custom", JSON.stringify(custom));
 }
 
 /* ---------- public API ---------- */
 async function apiConfig(env) {
-  const s = await getSettings(env);
-  return json({ settings: { shopName: s.shopName, whatsapp: s.whatsapp, shipping: s.shipping, freeShippingFrom: s.freeShippingFrom, couponCode: s.couponCode, announcement: s.announcement }, products: await getOverrides(env) },
+  const [s, cat] = await Promise.all([getSettings(env), loadCatalog(env)]);
+  return json({ settings: { shopName: s.shopName, whatsapp: s.whatsapp, shipping: s.shipping, freeShippingFrom: s.freeShippingFrom, couponCode: s.couponCode, announcement: s.announcement },
+    products: cat.ov, builtin: cat.builtin, custom: cat.custom.filter((c) => !c.hidden) },
     200, { "Cache-Control": "no-cache" });
 }
 async function apiOrder(req, env) {
@@ -111,10 +126,10 @@ async function apiOrder(req, env) {
   if (!/^0[5-7]\d{8}$/.test(phone)) return bad("phone");
   const ih = await ipHash(req, env);
   if ((await count(env, "rl:p:" + phone)) >= 3 || (await count(env, "rl:i:" + ih)) >= 6) return bad("rate", 429);
-  const [settings, ov] = await Promise.all([getSettings(env), getOverrides(env)]);
-  const priced = priceOrder(b.items, settings, ov, b.coupon, lang);
+  const [settings, cat] = await Promise.all([getSettings(env), loadCatalog(env)]);
+  const priced = priceOrder(b.items, settings, cat, b.coupon, lang);
   if (priced.error) return bad(priced.error);
-  for (const l of priced.lines) { const p = product(l.id, ov); if (p.stock !== null && p.stock < l.qty) return bad("stock", 409); }
+  for (const l of priced.lines) { const p = product(l.id, cat); if (p.stock !== null && p.stock < l.qty) return bad("stock", 409); }
   const now = Date.now();
   const ref = "W9-" + now.toString(36).slice(-4).toUpperCase() + Math.random().toString(36).slice(2, 4).toUpperCase();
   const order = { ref, status: "new", created: now, lang, name, phone, city, address, note, items: priced.lines, subtotal: priced.subtotal, shipping: priced.shipping, total: priced.total, coupon: priced.coupon, adminNote: "", history: [{ s: "new", t: now }] };
@@ -209,13 +224,73 @@ async function admin(req, env, path) {
     if (method === "DELETE") { await env.DATA.delete(key); return json({ ok: true }); }
   }
   if (path === "products" && method === "GET") {
-    const ov = await getOverrides(env);
-    return json({ brands: CAT.BRANDS.map((b) => ({ id: b.id, name: b.name })), products: CAT.PRODUCTS.map((p) => { const q = product(p.id, ov); return { id: q.id, brand: q.brand, model: q.model, name: q.name, colors: q.colors, price: q.price, old: q.old, basePrice: p.price, baseOld: p.old, stock: q.stock, hidden: q.hidden, coll: q.coll || null }; }) });
+    const cat = await loadCatalog(env);
+    const builtin = cat.builtin ? CAT.PRODUCTS.map((p) => { const q = product(p.id, cat); return { id: q.id, brand: q.brand, model: q.model, name: q.name, colors: q.colors, price: q.price, old: q.old, stock: q.stock, hidden: q.hidden, coll: q.coll || null }; }) : [];
+    return json({ builtin: cat.builtin, builtinCount: CAT.PRODUCTS.length,
+      brands: CAT.BRANDS.map((b) => ({ id: b.id, name: b.name, models: b.models.map((m) => ({ name: m, slug: CAT.slug(m) })) })),
+      colls: Object.entries(CAT.COLLS).map(([id, c]) => ({ id, name: c.name })),
+      custom: cat.custom, products: builtin });
+  }
+  if (path === "products" && method === "POST") {
+    let b; try { b = await req.json(); } catch { return bad("json"); }
+    const custom = await getCustom(env);
+    if (custom.length >= 500) return bad("limit");
+    const r = cleanProduct(b, null); if (r.error) return bad(r.error);
+    custom.unshift(r.product);
+    await env.DATA.put("custom", JSON.stringify(custom));
+    return json({ product: r.product }, 201);
+  }
+  const pm = path.match(/^products\/(p-[a-z0-9]{6,16})$/);
+  if (pm) {
+    const custom = await getCustom(env);
+    const i = custom.findIndex((x) => x.id === pm[1]); if (i < 0) return bad("notfound", 404);
+    if (method === "PUT") {
+      let b; try { b = await req.json(); } catch { return bad("json"); }
+      const r = cleanProduct(b, custom[i]); if (r.error) return bad(r.error);
+      const gone = (custom[i].images || []).filter((m) => !r.product.images.includes(m));
+      custom[i] = r.product;
+      await env.DATA.put("custom", JSON.stringify(custom));
+      await Promise.all(gone.map((m) => env.DATA.delete("media:" + m)));
+      return json({ product: r.product });
+    }
+    if (method === "DELETE") {
+      const [gone] = custom.splice(i, 1);
+      await env.DATA.put("custom", JSON.stringify(custom));
+      await Promise.all((gone.images || []).map((m) => env.DATA.delete("media:" + m)));
+      return json({ ok: true });
+    }
+  }
+  if (path === "catalog" && method === "POST") {
+    let b; try { b = await req.json(); } catch { return bad("json"); }
+    await env.DATA.put("catalog", JSON.stringify({ builtin: !!b.builtin }));
+    return json({ builtin: !!b.builtin });
+  }
+  if (path === "media" && method === "POST") {
+    const type = (req.headers.get("Content-Type") || "").split(";")[0].trim();
+    if (!["image/jpeg", "image/png", "image/webp"].includes(type)) return bad("type", 415);
+    const buf = new Uint8Array(await req.arrayBuffer());
+    if (buf.length < 100 || buf.length > 2.5 * 1024 * 1024) return bad("size", 413);
+    const isJpg = buf[0] === 0xff && buf[1] === 0xd8, isPng = buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47;
+    const isWebp = buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46 && buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50;
+    const real = isJpg ? "image/jpeg" : isPng ? "image/png" : isWebp ? "image/webp" : null;
+    if (!real) return bad("type", 415);
+    const id = b64url(crypto.getRandomValues(new Uint8Array(12)));
+    await env.DATA.put("media:" + id, buf, { metadata: { type: real, size: buf.length } });
+    return json({ id }, 201);
   }
   if (path === "products" && method === "PATCH") {
     let b; try { b = await req.json(); } catch { return bad("json"); }
     const ov = await getOverrides(env);
+    const custom = await getCustom(env); let customChanged = false;
     for (const [id, c] of Object.entries(b.changes || {}).slice(0, 500)) {
+      const own = custom.find((x) => x.id === id);
+      if (own && c) {
+        if ("price" in c) { const v = clampInt(c.price, 1, 100000); if (v !== null) own.price = v; }
+        if ("old" in c) { const v = clampInt(c.old, 0, 100000); own.old = v || 0; }
+        if ("stock" in c) { own.stock = c.stock === null || c.stock === "" ? null : clampInt(c.stock, 0, 100000); }
+        if ("hidden" in c) own.hidden = !!c.hidden;
+        customChanged = true; continue;
+      }
       const p = BY_ID[id]; if (!p || !c) continue;
       const o = { ...(ov[id] || {}) };
       if ("price" in c) { const v = clampInt(c.price, 1, 100000); if (v === null || v === p.price) delete o.price; else o.price = v; }
@@ -225,6 +300,7 @@ async function admin(req, env, path) {
       if (Object.keys(o).length) ov[id] = o; else delete ov[id];
     }
     await env.DATA.put("products", JSON.stringify(ov));
+    if (customChanged) await env.DATA.put("custom", JSON.stringify(custom));
     return json({ ok: true, count: Object.keys(ov).length });
   }
   if (path === "settings" && method === "GET") return json({ settings: await getSettings(env) });
@@ -261,6 +337,44 @@ async function admin(req, env, path) {
   return bad("notfound", 404);
 }
 
+const MEDIA_ID = /^[A-Za-z0-9_-]{16}$/;
+const HEX = /^#[0-9a-f]{6}$/;
+function cleanProduct(b, cur) {
+  const lang2 = (o, max) => ({ fr: str(o?.fr, max), ar: str(o?.ar, max) });
+  const text = (v, max) => String(v ?? "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, " ").replace(/\n{3,}/g, "\n\n").trim().slice(0, max); // keeps line breaks
+  const longText = (o, max) => ({ fr: text(o?.fr, max), ar: text(o?.ar, max) });
+  const name = lang2(b.name, 90); if (name.fr.length < 2 && name.ar.length < 2) return { error: "name" };
+  if (!name.fr) name.fr = name.ar; if (!name.ar) name.ar = name.fr;
+  const brand = String(b.brand || "");
+  let model = "", modelSlug = null;
+  if (brand !== "accessoires") {
+    const br = CAT.BRANDS.find((x) => x.id === brand); if (!br) return { error: "brand" };
+    const m = br.models.find((x) => CAT.slug(x) === b.modelSlug); if (!m) return { error: "model" };
+    model = m; modelSlug = CAT.slug(m);
+  }
+  const price = clampInt(b.price, 1, 100000); if (!price) return { error: "price" };
+  const old = clampInt(b.old, 0, 100000) || 0;
+  const stock = b.stock === null || b.stock === "" || b.stock === undefined ? null : clampInt(b.stock, 0, 100000);
+  const colors = [], colorLabels = {};
+  for (const c of Array.isArray(b.colors) ? b.colors.slice(0, 8) : []) {
+    const hex = String(c?.hex || "").toLowerCase(); if (!HEX.test(hex) || colors.includes(hex)) continue;
+    colors.push(hex); const l = lang2(c, 30); if (l.fr || l.ar) colorLabels[hex] = { fr: l.fr || l.ar, ar: l.ar || l.fr };
+  }
+  const images = (Array.isArray(b.images) ? b.images : []).filter((m) => MEDIA_ID.test(m)).slice(0, 8);
+  const coll = CAT.COLLS[b.coll] ? b.coll : null;
+  const badge = lang2(b.badge, 20);
+  const now = Date.now();
+  const product = {
+    id: cur ? cur.id : "p-" + now.toString(36) + Math.random().toString(36).slice(2, 5),
+    custom: true, brand, model, modelSlug, accessory: brand === "accessoires" ? "stand" : undefined,
+    cam: (CAT.BRANDS.find((x) => x.id === brand) || {}).cam || "tri", pattern: "solid",
+    coll, name, desc: longText(b.desc, 2000), badge: badge.fr || badge.ar ? { fr: badge.fr || badge.ar, ar: badge.ar || badge.fr } : null,
+    price, old: old > price ? old : 0, stock, hidden: !!b.hidden, colors, colorLabels, images,
+    created: cur ? cur.created : now, updated: now,
+  };
+  return { product };
+}
+
 async function stats(env) {
   const list = await listOrders(env);
   const now = Date.now(), day = 864e5;
@@ -277,7 +391,9 @@ async function stats(env) {
     cities[o.city] = (cities[o.city] || 0) + 1;
     for (const [id, qty, price] of o.it || []) { prod[id] = prod[id] || { id, qty: 0, revenue: 0 }; prod[id].qty += qty; prod[id].revenue += qty * price; }
   }
-  const top = Object.values(prod).sort((a, b) => b.qty - a.qty).slice(0, 5).map((x) => ({ ...x, title: BY_ID[x.id] ? titleOf(BY_ID[x.id], "fr") : x.id, titleAr: BY_ID[x.id] ? titleOf(BY_ID[x.id], "ar") : x.id }));
+  const custom = await getCustom(env);
+  const find = (id) => custom.find((c) => c.id === id) || BY_ID[id];
+  const top = Object.values(prod).sort((a, b) => b.qty - a.qty).slice(0, 5).map((x) => { const p = find(x.id); return { ...x, title: p ? titleOf(p, "fr") : x.id, titleAr: p ? titleOf(p, "ar") : x.id }; });
   const done = list.filter((o) => o.status !== "new");
   const delivered = list.filter((o) => o.status === "delivered").length, returned = list.filter((o) => o.status === "returned").length;
   return {
@@ -296,8 +412,9 @@ async function stats(env) {
 async function seedDemo(env) {
   const names = ["Yassine B.", "Salma E.", "Hamza R.", "Imane K.", "Othmane T.", "Khadija M.", "Ayoub L.", "Nora A.", "Mehdi S.", "Fatima Z. H.", "Anas O.", "Meryem C.", "Reda F.", "Hiba N.", "Soufiane D.", "Ghita J."];
   const cities = ["Casablanca", "Rabat", "Marrakech", "Fès", "Tanger", "Agadir", "Meknès", "Kénitra", "Oujda", "Tétouan", "Salé", "El Jadida"];
-  const [settings, ov] = await Promise.all([getSettings(env), getOverrides(env)]);
-  const pool = CAT.PRODUCTS.filter((p) => !p.hidden).sort((a, b) => b.pop - a.pop).slice(0, 40);
+  const [settings, cat] = await Promise.all([getSettings(env), loadCatalog(env)]);
+  const pool = [...cat.custom.filter((c) => !c.hidden), ...(cat.builtin ? CAT.PRODUCTS.slice().sort((a, b) => b.pop - a.pop).slice(0, 40) : [])];
+  if (!pool.length) return { created: 0, error: "noproducts" };
   let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
   const pick = (a) => a[Math.floor(rnd() * a.length)];
   const now = Date.now(); let made = 0;
@@ -305,7 +422,7 @@ async function seedDemo(env) {
     const created = now - Math.floor(rnd() * 13.5 * 864e5) - 600e3;
     const items = [{ id: pick(pool).id, qty: rnd() < 0.8 ? 1 : 2 }]; if (rnd() < 0.35) items.push({ id: pick(pool).id, qty: 1 });
     const lang = rnd() < 0.45 ? "ar" : "fr";
-    const priced = priceOrder(items, settings, ov, "", lang); if (priced.error) continue;
+    const priced = priceOrder(items, settings, cat, "", lang); if (priced.error) continue;
     const age = (now - created) / 864e5;
     const status = age < 1 ? pick(["new", "new", "confirmed"]) : age < 3 ? pick(["confirmed", "shipped", "shipped", "cancelled"]) : pick(["delivered", "delivered", "delivered", "returned", "cancelled", "shipped"]);
     const ref = "W9-D" + created.toString(36).slice(-4).toUpperCase();
@@ -318,7 +435,7 @@ async function seedDemo(env) {
 }
 
 /* ---------- static files ---------- */
-const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'";
+const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'";
 const SEC = { "X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origin-when-cross-origin", "X-Frame-Options": "DENY", "Strict-Transport-Security": "max-age=31536000", "Permissions-Policy": "camera=(), microphone=(), geolocation=()", "Content-Security-Policy": CSP };
 function serveFile(req, url) {
   let p = url.pathname;
@@ -343,7 +460,7 @@ export default {
         if (req.method !== "GET" && req.method !== "HEAD") {
           const origin = req.headers.get("Origin");
           if (origin && origin !== url.origin) return bad("origin", 403);
-          if (!(req.headers.get("Content-Type") || "").includes("application/json") && req.method !== "DELETE" && !url.pathname.endsWith("/logout")) return bad("type", 415);
+          if (!(req.headers.get("Content-Type") || "").includes("application/json") && req.method !== "DELETE" && !url.pathname.endsWith("/logout") && url.pathname !== "/api/admin/media") return bad("type", 415);
         }
         if (!env.DATA) return bad("storage", 503);
         if (url.pathname === "/api/config" && req.method === "GET") return await apiConfig(env);
@@ -352,6 +469,12 @@ export default {
         return bad("notfound", 404);
       }
       if (req.method !== "GET" && req.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+      const mm = url.pathname.match(/^\/media\/([A-Za-z0-9_-]{16})$/);
+      if (mm && env.DATA) {
+        const { value, metadata } = await env.DATA.getWithMetadata("media:" + mm[1], "arrayBuffer");
+        if (!value) return new Response("Not found", { status: 404 });
+        return new Response(req.method === "HEAD" ? null : value, { headers: { "Content-Type": metadata?.type || "image/jpeg", "Cache-Control": "public, max-age=31536000, immutable", ...SEC } });
+      }
       return serveFile(req, url) || Response.redirect(url.origin + "/", 302);
     } catch (e) {
       console.error(e);

@@ -18,6 +18,18 @@
       waConfirm: "Confirmer sur WhatsApp", call: "Appeler", copy: "Copier l’adresse", copied: "Copié", deleteOrder: "Supprimer", confirmDelete: "Supprimer cette commande ?", saved: "Enregistré",
       pSearch: "Rechercher un produit ou un modèle…", allBrands: "Toutes les marques", accessories: "Accessoires", product: "Produit", price: "Prix", oldPrice: "Ancien prix", stock: "Stock", visible: "Visible",
       unlimited: "illimité", changes: (n) => `${n} modification${n > 1 ? "s" : ""} non enregistrée${n > 1 ? "s" : ""}`, save: "Enregistrer", discard: "Annuler", showing: (a, b) => `${a} sur ${b} produits`, hiddenOnly: "Masqués", lowOnly: "Stock bas",
+      addProduct: "Ajouter un produit", editProduct: "Modifier le produit", createProduct: "Créer le produit", edit: "Modifier", deleteP: "Supprimer", mine: "à moi", mineMany: "Mes produits",
+      confirmDeleteP: (n) => `Supprimer « ${n} » et ses photos ? C’est définitif.`, deletedP: "Produit supprimé", created: "Produit créé",
+      noProducts: "Aucun produit dans la boutique.", noProductsHint: "Ajoutez votre premier produit : photos, prix, modèle, couleurs.",
+      builtinOn: (n) => `${n} produits générés par Claude (démo)`, builtinOnTxt: "Les coques Wa9i dessinées pour la démo. Supprimez-les pour ne garder que vos propres produits.", builtinDelete: "Supprimer tous les produits générés",
+      builtinConfirm: (n) => `Retirer les ${n} produits générés de la boutique ? Vos propres produits et vos commandes restent. Vous pourrez les restaurer plus tard.`, builtinDone: "Produits générés supprimés",
+      builtinOff: "Produits générés supprimés", builtinOffTxt: "La boutique ne montre que vos propres produits.", builtinRestore: "Restaurer les produits de démo",
+      photos: "Photos", addPhotos: "Ajouter des photos", photosHint: "Jusqu’à 8 photos. La première est la photo principale. Elles sont réduites automatiquement avant l’envoi.", makeMain: "Mettre en premier", mainPhoto: "Principale", uploading: "Envoi…", uploadErr: "Une photo n’a pas pu être envoyée", waitUpload: "Attendez la fin de l’envoi des photos.",
+      info: "Informations", nameFr: "Nom (français)", nameAr: "Nom (arabe)", brand: "Marque", model: "Modèle", collection: "Collection", noCollection: "Aucune",
+      priceStock: "Prix et stock", oldHint: "Barré à côté du prix, pour montrer la réduction", stockHint: "Vide = illimité", badge: "Étiquette", badgePh: "ex. Nouveau, Best-seller", visibleInShop: "Visible dans la boutique",
+      colours: "Couleurs", addColour: "Ajouter une couleur", colourFr: "Nom (FR)", colourAr: "Nom (AR)", coloursHint: "Facultatif. Le client choisit la couleur sur la page produit.",
+      description: "Description", descFr: "Description (français)", descAr: "Description (arabe)", remove: "Retirer",
+      eName: "Indiquez le nom du produit", ePrice: "Indiquez un prix", e_name: "Indiquez le nom du produit", e_price: "Prix invalide", e_brand: "Choisissez une marque", e_model: "Choisissez un modèle", e_limit: "Limite de 500 produits atteinte",
       shop: "Boutique", shopName: "Nom de la boutique", whatsapp: "Numéro WhatsApp", whatsappHint: "Format international, chiffres seulement : 2126XXXXXXXX", shipFee: "Frais de livraison (DH)", freeFrom: "Livraison offerte dès (articles)",
       couponCode: "Code promo (livraison offerte dès 2 articles)", couponHint: "Laissez vide pour désactiver", announce: "Barre d’annonce (bas de page)", announceFr: "Texte en français", announceAr: "Texte en arabe",
       security: "Sécurité", curPw: "Mot de passe actuel", newPw: "Nouveau mot de passe (10 caractères minimum)", changePw: "Changer le mot de passe", pwChanged: "Mot de passe changé", pwShort: "10 caractères minimum",
@@ -41,6 +53,18 @@
       waConfirm: "أكد على واتساب", call: "عيط", copy: "نسخ العنوان", copied: "تنسخ", deleteOrder: "حذف", confirmDelete: "تحذف هاد الطلب؟", saved: "تسجل",
       pSearch: "قلب على منتج ولا موديل…", allBrands: "جميع الماركات", accessories: "إكسسوارات", product: "المنتج", price: "الثمن", oldPrice: "الثمن القديم", stock: "الستوك", visible: "ظاهر",
       unlimited: "بلا حدود", changes: (n) => `${n} تعديل ما تسجلش`, save: "سجل", discard: "إلغاء", showing: (a, b) => `${a} من ${b} منتج`, hiddenOnly: "مخفيين", lowOnly: "ستوك قليل",
+      addProduct: "زيد منتج", editProduct: "بدل المنتج", createProduct: "زيد المنتج", edit: "بدل", deleteP: "حذف", mine: "ديالي", mineMany: "المنتجات ديالي",
+      confirmDeleteP: (n) => `تحذف « ${n} » والصور ديالو؟ ما كاينش رجوع.`, deletedP: "تحذف المنتج", created: "تزاد المنتج",
+      noProducts: "ما كاين حتى منتج فالمتجر.", noProductsHint: "زيد أول منتج: الصور، الثمن، الموديل، الألوان.",
+      builtinOn: (n) => `${n} منتج صاوبهم Claude (تجريبي)`, builtinOnTxt: "كوكات Wa9i المرسومة للتجربة. حيدهم باش يبقاو غير المنتجات ديالك.", builtinDelete: "حذف جميع المنتجات المولدة",
+      builtinConfirm: (n) => `تحيد ${n} منتج مولد من المتجر؟ المنتجات ديالك والطلبات كيبقاو. تقدر ترجعهم من بعد.`, builtinDone: "تحذفو المنتجات المولدة",
+      builtinOff: "تحذفو المنتجات المولدة", builtinOffTxt: "المتجر كيبين غير المنتجات ديالك.", builtinRestore: "رجع المنتجات التجريبية",
+      photos: "الصور", addPhotos: "زيد صور", photosHint: "حتى 8 صور. الأولى هي الصورة الرئيسية. كيتصغرو أوتوماتيكياً قبل الإرسال.", makeMain: "ديرها الأولى", mainPhoto: "الرئيسية", uploading: "كيتصيفط…", uploadErr: "شي صورة ما تصيفطاتش", waitUpload: "تسنى حتى يسالي إرسال الصور.",
+      info: "المعلومات", nameFr: "الاسم (بالفرنسية)", nameAr: "الاسم (بالعربية)", brand: "الماركة", model: "الموديل", collection: "المجموعة", noCollection: "بلا",
+      priceStock: "الثمن والستوك", oldHint: "كيتشطب حدا الثمن باش يبان التخفيض", stockHint: "خاوي = بلا حدود", badge: "علامة", badgePh: "مثلاً: جديد", visibleInShop: "ظاهر فالمتجر",
+      colours: "الألوان", addColour: "زيد لون", colourFr: "الاسم (FR)", colourAr: "الاسم (AR)", coloursHint: "اختياري. الزبون كيختار اللون فصفحة المنتج.",
+      description: "الوصف", descFr: "الوصف (بالفرنسية)", descAr: "الوصف (بالعربية)", remove: "حيد",
+      eName: "دخل سمية المنتج", ePrice: "دخل الثمن", e_name: "دخل سمية المنتج", e_price: "ثمن غير صالح", e_brand: "اختار ماركة", e_model: "اختار موديل", e_limit: "وصلتي للحد ديال 500 منتج",
       shop: "المتجر", shopName: "سمية المتجر", whatsapp: "رقم واتساب", whatsappHint: "بالصيغة الدولية، أرقام فقط: 2126XXXXXXXX", shipFee: "ثمن التوصيل (درهم)", freeFrom: "التوصيل مجاني ابتداءً من (منتجات)",
       couponCode: "كود التخفيض (توصيل مجاني ابتداءً من منتجين)", couponHint: "خليه خاوي باش توقفو", announce: "شريط الإعلان (تحت الصفحة)", announceFr: "النص بالفرنسية", announceAr: "النص بالعربية",
       security: "الأمان", curPw: "كلمة السر الحالية", newPw: "كلمة السر الجديدة (10 حروف على الأقل)", changePw: "بدل كلمة السر", pwChanged: "تبدلات كلمة السر", pwShort: "10 حروف على الأقل",
@@ -67,6 +91,7 @@
     logout: '<path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/>',
     cash: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>', cart: '<path d="M6 7h12l-1 13H7z"/>', trend: '<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>', basket: '<path d="M5 9h14l-1.5 10h-11zM9 9l3-5 3 5"/>',
     wa: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>', phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>', edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>', trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
     download: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>', close: '<path d="M6 6l12 12M18 6 6 18"/>', copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>', alert: '<path d="M12 3 2 20h20zM12 10v4M12 17v.5"/>',
   };
   const icon = (n, s = 20) => `<svg class="i" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ""}</svg>`;
@@ -245,22 +270,28 @@
   /* ---------- Products ---------- */
   const pf = { q: "", brand: "", only: "" };
   let pdata = null; const dirty = {};
+  const pname = (p) => (p.name && (p.name[lang] || p.name.fr)) || p.id;
   async function products() {
-    if (!pdata) pdata = await api("products");
-    const name = (p) => (p.name && (p.name[lang] || p.name.fr)) || p.id;
+    pdata = await api("products"); // always fresh: stock changes with each order
+    const all = () => [...pdata.custom.map((c) => ({ ...c, own: true })), ...pdata.products];
+    const cur = (p) => ({ price: p.price, old: p.old, stock: p.stock, hidden: p.hidden, ...(dirty[p.id] || {}) });
+    const thumb = (p) => p.own ? (p.images && p.images[0] ? `<img class="pthumb" src="/media/${esc(p.images[0])}" alt="" loading="lazy">` : `<span class="pthumb empty">${esc(pname(p)).slice(0, 1)}</span>`) : "";
     const draw = () => {
       const q = pf.q.toLowerCase().trim();
-      let list = pdata.products.filter((p) => (!pf.brand || p.brand === pf.brand) && (!q || `${name(p)} ${p.name?.fr} ${p.model || ""}`.toLowerCase().includes(q)));
+      let list = all().filter((p) => (!pf.brand || p.brand === pf.brand) && (!q || `${pname(p)} ${p.name?.fr} ${p.name?.ar} ${p.model || ""}`.toLowerCase().includes(q)));
+      if (pf.only === "own") list = list.filter((p) => p.own);
       if (pf.only === "hidden") list = list.filter((p) => cur(p).hidden);
-      if (pf.only === "low") list = list.filter((p) => { const s = cur(p).stock; return s !== null && s !== "" && Number(s) <= 5; });
-      const shown = list.slice(0, 150);
-      $("#ptable").innerHTML = shown.length ? `<table><thead><tr><th>${L.product}</th><th class="num">${L.price}</th><th class="num hide-m">${L.oldPrice}</th><th class="num">${L.stock}</th><th>${L.visible}</th></tr></thead><tbody>
-        ${shown.map((p) => { const c = cur(p); return `<tr data-id="${p.id}" class="${dirty[p.id] ? "dirty" : ""}${c.hidden ? " hidden-p" : ""}"><td><b>${esc(name(p))}</b><br><span class="muted small">${esc(p.model || L.accessories)}</span> ${p.colors.map((x) => `<i class="swatch" style="background:${esc(x)}"></i>`).join(" ")}</td>
+      if (pf.only === "low") list = list.filter((p) => { const s = cur(p).stock; return s !== null && s !== undefined && s !== "" && Number(s) <= 5; });
+      const shown = list.slice(0, 200);
+      $("#ptable").innerHTML = shown.length ? `<table><thead><tr><th>${L.product}</th><th class="num">${L.price}</th><th class="num hide-m">${L.oldPrice}</th><th class="num">${L.stock}</th><th>${L.visible}</th><th></th></tr></thead><tbody>
+        ${shown.map((p) => { const c = cur(p); return `<tr data-id="${esc(p.id)}" class="${dirty[p.id] ? "dirty" : ""}${c.hidden ? " hidden-p" : ""}"><td><div class="pcell">${thumb(p)}<span><b>${esc(pname(p))}</b>${p.own ? ` <span class="tag">${L.mine}</span>` : ""}<br><span class="muted small">${esc(p.model || L.accessories)}</span> ${(p.colors || []).map((x) => `<i class="swatch" style="background:${esc(x)}"></i>`).join(" ")}</span></div></td>
           <td class="num"><input class="mini" type="number" min="1" inputmode="numeric" data-f="price" value="${c.price}" aria-label="${L.price}"></td>
-          <td class="num hide-m"><input class="mini" type="number" min="0" inputmode="numeric" data-f="old" value="${c.old}" aria-label="${L.oldPrice}"></td>
+          <td class="num hide-m"><input class="mini" type="number" min="0" inputmode="numeric" data-f="old" value="${c.old || ""}" aria-label="${L.oldPrice}"></td>
           <td class="num"><input class="mini" type="number" min="0" inputmode="numeric" data-f="stock" value="${c.stock ?? ""}" placeholder="${L.unlimited}" aria-label="${L.stock}"></td>
-          <td><label class="switch"><input type="checkbox" data-f="hidden" ${c.hidden ? "" : "checked"}><span></span></label></td></tr>`; }).join("")}</tbody></table>` : `<div class="empty">—</div>`;
-      $("#pcount").textContent = L.showing(Math.min(shown.length, list.length), pdata.products.length);
+          <td><label class="switch"><input type="checkbox" data-f="hidden" ${c.hidden ? "" : "checked"}><span></span></label></td>
+          <td class="nowrap">${p.own ? `<button class="icon-btn" data-edit="${esc(p.id)}" aria-label="${L.edit}" title="${L.edit}">${icon("edit", 18)}</button> <button class="icon-btn danger" data-delp="${esc(p.id)}" aria-label="${L.deleteP}" title="${L.deleteP}">${icon("trash", 18)}</button>` : ""}</td></tr>`; }).join("")}</tbody></table>`
+        : `<div class="empty"><b>${pdata.custom.length || pdata.builtin ? "—" : L.noProducts}</b>${pdata.custom.length || pdata.builtin ? "" : `<p class="small">${L.noProductsHint}</p><button class="btn green" data-new>${icon("plus", 18)}${L.addProduct}</button>`}</div>`;
+      $("#pcount").textContent = L.showing(Math.min(shown.length, list.length), all().length);
       $$("#ptable tr[data-id]").forEach((tr) => {
         const id = tr.dataset.id;
         $$("input", tr).forEach((inp) => inp.addEventListener(inp.type === "checkbox" ? "change" : "input", () => {
@@ -269,17 +300,22 @@
           tr.classList.add("dirty"); if (f === "hidden") tr.classList.toggle("hidden-p", !inp.checked); savebar();
         }));
       });
+      $$("[data-edit]").forEach((b) => (b.onclick = () => productForm(pdata.custom.find((c) => c.id === b.dataset.edit))));
+      $$("[data-delp]").forEach((b) => (b.onclick = async () => {
+        const p = pdata.custom.find((c) => c.id === b.dataset.delp); if (!p || !confirm(L.confirmDeleteP(pname(p)))) return;
+        try { await api("products/" + p.id, { method: "DELETE" }); pdata = await api("products"); draw(); toast(L.deletedP); } catch { toast(L.err, 1); }
+      }));
+      $$("[data-new]").forEach((b) => (b.onclick = () => productForm(null)));
     };
-    const cur = (p) => ({ price: p.price, old: p.old, stock: p.stock, hidden: p.hidden, ...(dirty[p.id] || {}) });
-    const savebar = () => {
-      const n = Object.keys(dirty).length; const bar = $("#savebar"); bar.hidden = !n;
-      $("#savebar span").textContent = L.changes(n);
-    };
+    const savebar = () => { const n = Object.keys(dirty).length; $("#savebar").hidden = !n; $("#savebar span").textContent = L.changes(n); };
     $("#page").innerHTML = `
-      <div class="page-head"><div><h1>${L.nav.products}</h1><p id="pcount"></p></div></div>
+      <div class="page-head"><div><h1>${L.nav.products}</h1><p id="pcount"></p></div><button class="btn green" data-new>${icon("plus", 18)}${L.addProduct}</button></div>
+      <div class="card catalog-card">${pdata.builtin
+        ? `<div class="grow"><b>${L.builtinOn(pdata.builtinCount)}</b><p class="muted small">${L.builtinOnTxt}</p></div><button class="btn danger" id="builtinOff">${icon("trash", 18)}${L.builtinDelete}</button>`
+        : `<div class="grow"><b>${L.builtinOff}</b><p class="muted small">${L.builtinOffTxt}</p></div><button class="btn ghost small" id="builtinOn">${L.builtinRestore}</button>`}</div>
       <div class="toolbar"><input type="search" id="pq" placeholder="${L.pSearch}" value="${esc(pf.q)}" aria-label="${L.pSearch}">
         <select id="pb" aria-label="${L.allBrands}"><option value="">${L.allBrands}</option>${pdata.brands.map((b) => `<option value="${b.id}"${pf.brand === b.id ? " selected" : ""}>${esc(b.name)}</option>`).join("")}<option value="accessoires"${pf.brand === "accessoires" ? " selected" : ""}>${L.accessories}</option></select></div>
-      <div class="chips"><button class="chip${!pf.only ? " on" : ""}" data-only="">${L.all}</button><button class="chip${pf.only === "hidden" ? " on" : ""}" data-only="hidden">${L.hiddenOnly}</button><button class="chip${pf.only === "low" ? " on" : ""}" data-only="low">${L.lowOnly}</button></div>
+      <div class="chips"><button class="chip${!pf.only ? " on" : ""}" data-only="">${L.all}</button><button class="chip${pf.only === "own" ? " on" : ""}" data-only="own">${L.mineMany} <b>${pdata.custom.length}</b></button><button class="chip${pf.only === "hidden" ? " on" : ""}" data-only="hidden">${L.hiddenOnly}</button><button class="chip${pf.only === "low" ? " on" : ""}" data-only="low">${L.lowOnly}</button></div>
       <div class="table-wrap" id="ptable"></div>
       <div class="savebar" id="savebar" hidden><span></span><div class="actions"><button class="btn ghost small" id="pdiscard" style="background:transparent;color:#fff;border-color:rgb(255 255 255 / .3)">${L.discard}</button><button class="btn small" id="psave">${L.save}</button></div></div>`;
     draw(); savebar();
@@ -292,6 +328,114 @@
       try { await api("products", { method: "PATCH", body: JSON.stringify({ changes: dirty }) }); for (const k in dirty) delete dirty[k]; pdata = await api("products"); draw(); savebar(); toast(L.saved); }
       catch { toast(L.err, 1); } finally { e.target.disabled = false; }
     };
+    $("#builtinOff")?.addEventListener("click", async () => {
+      if (!confirm(L.builtinConfirm(pdata.builtinCount))) return;
+      try { await api("catalog", { method: "POST", body: JSON.stringify({ builtin: false }) }); pdata = null; await products(); toast(L.builtinDone); } catch { toast(L.err, 1); }
+    });
+    $("#builtinOn")?.addEventListener("click", async () => {
+      try { await api("catalog", { method: "POST", body: JSON.stringify({ builtin: true }) }); pdata = null; await products(); toast(L.saved); } catch { toast(L.err, 1); }
+    });
+  }
+
+  /* ---------- Add / edit a product ---------- */
+  // Photos are shrunk in the browser (longest side 1400 px) before upload, so they stay light for KV and for visitors.
+  async function shrink(file) {
+    const img = await new Promise((res, rej) => { const u = URL.createObjectURL(file); const i = new Image(); i.onload = () => { URL.revokeObjectURL(u); res(i); }; i.onerror = rej; i.src = u; });
+    const max = 1400, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement("canvas"); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    for (const [type, q] of [["image/webp", 0.82], ["image/jpeg", 0.85]]) {
+      const blob = await new Promise((r) => c.toBlob(r, type, q));
+      if (blob && blob.type === type) return blob;
+    }
+    throw new Error("encode");
+  }
+  async function upload(blob) {
+    const res = await fetch("/api/admin/media", { method: "POST", credentials: "same-origin", headers: { "Content-Type": blob.type }, body: blob });
+    if (!res.ok) throw new Error("upload");
+    return (await res.json()).id;
+  }
+  function productForm(p) {
+    closeDrawer();
+    const isNew = !p;
+    const f = p ? JSON.parse(JSON.stringify(p)) : { name: { fr: "", ar: "" }, desc: { fr: "", ar: "" }, badge: null, brand: "iphone", modelSlug: "", coll: null, price: "", old: "", stock: null, hidden: false, colors: [], colorLabels: {}, images: [] };
+    const colors = (f.colors || []).map((hex) => ({ hex, fr: f.colorLabels?.[hex]?.fr || "", ar: f.colorLabels?.[hex]?.ar || "" }));
+    let images = [...(f.images || [])], busy = 0;
+    const scrim = document.createElement("div"); scrim.className = "scrim";
+    const dr = document.createElement("aside"); dr.className = "drawer"; dr.setAttribute("role", "dialog"); dr.setAttribute("aria-modal", "true");
+    document.body.append(scrim, dr); scrim.onclick = () => { if (!busy) closeDrawer(); };
+    const models = (brand) => (pdata.brands.find((b) => b.id === brand) || { models: [] }).models;
+    const paintImages = () => {
+      $("#imgs", dr).innerHTML = images.map((m, i) => `<div class="img-tile"><img src="/media/${esc(m)}" alt=""><div class="img-actions">${i ? `<button type="button" class="icon-btn" data-first="${i}" title="${L.makeMain}" aria-label="${L.makeMain}">★</button>` : `<span class="main-tag">${L.mainPhoto}</span>`}<button type="button" class="icon-btn danger" data-rmimg="${i}" aria-label="${L.remove}">${icon("close", 16)}</button></div></div>`).join("")
+        + (busy ? `<div class="img-tile loading-tile">${L.uploading}</div>` : "");
+      $$("[data-first]", dr).forEach((b) => (b.onclick = () => { const [m] = images.splice(+b.dataset.first, 1); images.unshift(m); paintImages(); }));
+      $$("[data-rmimg]", dr).forEach((b) => (b.onclick = () => { images.splice(+b.dataset.rmimg, 1); paintImages(); }));
+    };
+    const paintColors = () => {
+      $("#cols", dr).innerHTML = colors.map((c, i) => `<div class="color-row"><input type="color" value="${esc(c.hex)}" data-ci="${i}" data-cf="hex" aria-label="${L.colour}"><input placeholder="${L.colourFr}" value="${esc(c.fr)}" data-ci="${i}" data-cf="fr" maxlength="30"><input placeholder="${L.colourAr}" value="${esc(c.ar)}" data-ci="${i}" data-cf="ar" maxlength="30" dir="rtl"><button type="button" class="icon-btn danger" data-rmc="${i}" aria-label="${L.remove}">${icon("close", 16)}</button></div>`).join("");
+      $$("[data-cf]", dr).forEach((inp) => (inp.oninput = () => { colors[+inp.dataset.ci][inp.dataset.cf] = inp.value; }));
+      $$("[data-rmc]", dr).forEach((b) => (b.onclick = () => { colors.splice(+b.dataset.rmc, 1); paintColors(); }));
+    };
+    dr.innerHTML = `<form class="form" id="pform" novalidate>
+      <div class="drawer-head"><h2>${isNew ? L.addProduct : L.editProduct}</h2><button type="button" class="icon-btn" data-x aria-label="×">${icon("close")}</button></div>
+      <div class="card form"><h2>${L.photos}</h2>
+        <div class="imgs" id="imgs"></div>
+        <label class="upload-btn"><input type="file" id="files" accept="image/jpeg,image/png,image/webp,image/heic,image/*" multiple>${icon("plus", 18)}<span>${L.addPhotos}</span></label>
+        <p class="muted small" style="margin:0">${L.photosHint}</p></div>
+      <div class="card form"><h2>${L.info}</h2>
+        <label>${L.nameFr} *<input name="nameFr" value="${esc(f.name.fr)}" maxlength="90" required></label>
+        <label>${L.nameAr}<input name="nameAr" value="${esc(f.name.ar)}" maxlength="90" dir="rtl"></label>
+        <div class="form-2"><label>${L.brand}<select name="brand">${pdata.brands.map((b) => `<option value="${b.id}"${f.brand === b.id ? " selected" : ""}>${esc(b.name)}</option>`).join("")}<option value="accessoires"${f.brand === "accessoires" ? " selected" : ""}>${L.accessories}</option></select></label>
+        <label id="modelWrap">${L.model}<select name="modelSlug"></select></label></div>
+        <label>${L.collection}<select name="coll"><option value="">${L.noCollection}</option>${pdata.colls.map((c) => `<option value="${c.id}"${f.coll === c.id ? " selected" : ""}>${esc(c.name[lang] || c.name.fr)}</option>`).join("")}</select></label></div>
+      <div class="card form"><h2>${L.priceStock}</h2>
+        <div class="form-2"><label>${L.price} (DH) *<input name="price" type="number" min="1" inputmode="numeric" value="${esc(f.price)}" required></label>
+        <label>${L.oldPrice} (DH)<input name="old" type="number" min="0" inputmode="numeric" value="${esc(f.old || "")}"><span class="hint">${L.oldHint}</span></label>
+        <label>${L.stock}<input name="stock" type="number" min="0" inputmode="numeric" value="${f.stock ?? ""}" placeholder="${L.unlimited}"><span class="hint">${L.stockHint}</span></label>
+        <label>${L.badge}<input name="badgeFr" value="${esc(f.badge?.fr || "")}" maxlength="20" placeholder="${L.badgePh}"></label></div>
+        <label class="switch"><input type="checkbox" name="visible" ${f.hidden ? "" : "checked"}><span></span>${L.visibleInShop}</label></div>
+      <div class="card form"><h2>${L.colours}</h2><div id="cols" class="form"></div><div><button type="button" class="btn ghost small" id="addColor">${icon("plus", 16)}${L.addColour}</button></div><p class="muted small" style="margin:0">${L.coloursHint}</p></div>
+      <div class="card form"><h2>${L.description}</h2>
+        <label>${L.descFr}<textarea name="descFr" maxlength="2000" rows="5">${esc(f.desc?.fr || "")}</textarea></label>
+        <label>${L.descAr}<textarea name="descAr" maxlength="2000" rows="5" dir="rtl">${esc(f.desc?.ar || "")}</textarea></label></div>
+      <p class="error" id="pErr"></p>
+      <div class="actions sticky-actions"><button class="btn green" type="submit">${isNew ? L.createProduct : L.save}</button><button type="button" class="btn ghost" data-x>${L.discard}</button></div>
+    </form>`;
+    const form = $("#pform", dr);
+    const paintModels = () => {
+      const br = form.brand.value, ms = models(br);
+      $("#modelWrap", dr).hidden = br === "accessoires";
+      form.modelSlug.innerHTML = ms.map((m) => `<option value="${m.slug}"${f.modelSlug === m.slug ? " selected" : ""}>${esc(m.name)}</option>`).join("");
+    };
+    form.brand.onchange = paintModels; paintModels(); paintImages(); paintColors();
+    $$("[data-x]", dr).forEach((b) => (b.onclick = () => { if (!busy) closeDrawer(); }));
+    $("#addColor", dr).onclick = () => { colors.push({ hex: "#111827", fr: "", ar: "" }); paintColors(); };
+    $("#files", dr).onchange = async (e) => {
+      const files = [...e.target.files].slice(0, 8 - images.length); e.target.value = "";
+      for (const file of files) {
+        busy++; paintImages();
+        try { images.push(await upload(await shrink(file))); } catch { toast(L.uploadErr, 1); }
+        busy--; paintImages();
+      }
+    };
+    form.onsubmit = async (e) => {
+      e.preventDefault(); $("#pErr", dr).textContent = "";
+      if (busy) { $("#pErr", dr).textContent = L.waitUpload; return; }
+      const body = {
+        name: { fr: form.nameFr.value, ar: form.nameAr.value }, desc: { fr: form.descFr.value, ar: form.descAr.value },
+        badge: { fr: form.badgeFr.value, ar: form.badgeFr.value }, brand: form.brand.value, modelSlug: form.modelSlug.value, coll: form.coll.value || null,
+        price: Number(form.price.value), old: Number(form.old.value) || 0, stock: form.stock.value === "" ? null : Number(form.stock.value),
+        hidden: !form.visible.checked, colors, images,
+      };
+      if (!body.name.fr.trim() && !body.name.ar.trim()) { $("#pErr", dr).textContent = L.eName; form.nameFr.focus(); return; }
+      if (!(body.price >= 1)) { $("#pErr", dr).textContent = L.ePrice; form.price.focus(); return; }
+      const btn = form.querySelector("[type=submit]"); btn.disabled = true;
+      try {
+        await api(isNew ? "products" : "products/" + p.id, { method: isNew ? "POST" : "PUT", body: JSON.stringify(body) });
+        closeDrawer(); pdata = await api("products"); toast(isNew ? L.created : L.saved); if (state.page === "products") products();
+      } catch (err) { $("#pErr", dr).textContent = L["e_" + err.code] || L.err; btn.disabled = false; }
+    };
+    form.nameFr.focus();
   }
 
   /* ---------- Settings ---------- */

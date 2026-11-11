@@ -13,11 +13,16 @@ An online shop for a fictional Moroccan phone-case brand, with a seller admin, m
 ## How orders work
 Orders are saved on the server (Cloudflare Workers KV) and appear in the admin at **/admin/**. The server works out prices, delivery and the promo code itself from `catalog.js`, so a price changed in the browser is ignored. Protections: Moroccan phone numbers only (05, 06, 07), at most 3 orders per phone and 6 per visitor per hour, a hidden field that catches bots, and writes accepted only from the shop's own pages. After ordering, the customer can also send the order on WhatsApp.
 
+## Your own products
+In the admin, **Produits → Ajouter un produit**: photos (up to 8, taken with the phone camera or picked from files; they're shrunk in the browser to 1400 px and stored in KV, served from `/media/<id>`), name in French and Arabic, brand and model (or accessory), collection, price, old price, stock, a label such as "Nouveau", colours with their names, and a description. Each product can be edited or deleted (its photos are deleted with it), and price, stock and visibility can also be changed straight from the list.
+
+The 219 generated demo products can be removed with **Supprimer tous les produits générés** (and brought back with **Restaurer**). They are removed on the live shop: it shows only the products added from the admin.
+
 ## Admin (`/admin/`)
 In French or Arabic, on computer and phone (bottom tab bar on mobile):
 - **Dashboard:** sales today, 7 days (vs the week before) and 30 days, average basket, confirmation and delivery rates, a 14-day sales chart, orders by status, best-selling products, top cities, latest orders, and an alert for orders to confirm.
 - **Orders:** filters by status with counts, search (name, phone, city, reference), CSV export for delivery companies. Each order has a one-tap WhatsApp confirmation message in the customer's language, a call button, copy address, status (new → confirmed → shipped → delivered / cancelled / returned), an internal note and a history. Cancelled or returned orders put their items back in stock.
-- **Products:** change price, old price and stock (empty = unlimited) and show or hide any product. The shop updates straight away and shows "only 3 left" or "out of stock".
+- **Products:** add your own products with photos, edit or delete them, change price, old price and stock (empty = unlimited) and show or hide any product. The shop updates straight away and shows "only 3 left" or "out of stock".
 - **Settings:** shop name, WhatsApp number, delivery fee, free delivery threshold, promo code, the announcement bar (FR/AR), change the password, and add or delete demo orders.
 - **Login:** password, signed HttpOnly session cookie (7 days). After 5 wrong passwords in 15 minutes (or 20 a day) that visitor is locked out. Changing the password logs out every device.
 

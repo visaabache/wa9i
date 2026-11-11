@@ -155,6 +155,13 @@ h1, h2, h3 { line-height: 1.15; margin: 0; letter-spacing: -.01em; }
 .line-img img.mock { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
 .line-img:has(img.mock) { padding: 0; overflow: hidden; }
 
+/* Own products without a photo */
+.no-photo { position: absolute; inset: 0; display: grid; place-items: center; font-size: 64px; font-weight: 800; color: var(--green); background: var(--sand); }
+.g-main .no-photo { position: static; width: 100%; height: 100%; }
+.line-img .no-photo { position: static; width: 100%; height: 100%; font-size: 26px; border-radius: 10px; }
+.acc p { white-space: normal; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
 /* Trust */
 .trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 20px 0; }
 .trust div { display: flex; gap: 12px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }

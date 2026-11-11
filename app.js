@@ -43,7 +43,7 @@
       codTitle: "Commander en 30 secondes", codSub: "Remplissez le formulaire, on vous appelle pour confirmer. Vous payez à la livraison.",
       fName: "Nom complet", fCity: "Ville", fCityPh: "Choisissez votre ville", fAddress: "Adresse", fPhone: "Téléphone", fNote: "Remarque (facultatif)",
       orderBtn: "Confirmer la commande", total: "Total", nPay: "Paiement à la livraison", nCall: "Appel de confirmation", nSwap: "Échange 7 jours",
-      dFeat: "Caractéristiques", dShip: "Livraison & paiement", dShipTxt: "Livraison en 24 h à Casablanca, Rabat et Marrakech, 48–72 h ailleurs. Vous payez en espèces au livreur. Livraison offerte dès 2 articles.",
+      dDesc: "Description", noProducts: "Les produits arrivent bientôt.", dFeat: "Caractéristiques", dShip: "Livraison & paiement", dShipTxt: "Livraison en 24 h à Casablanca, Rabat et Marrakech, 48–72 h ailleurs. Vous payez en espèces au livreur. Livraison offerte dès 2 articles.",
       related: "Vous aimerez aussi",
       cartEmpty: "Votre panier est vide.", continue: "Continuer mes achats", viewCart: "Voir le panier", checkout: "Passer la commande",
       subtotal: "Sous-total", shipping: "Livraison", free: "Offerte", discount: "Réduction", coupon: "Code promo", apply: "Appliquer",
@@ -82,7 +82,7 @@
       codTitle: "اطلب ف 30 ثانية", codSub: "عمر الفورمولير، غادي نعيطو ليك نأكدو. كتخلص ملي توصلك.",
       fName: "الاسم الكامل", fCity: "المدينة", fCityPh: "اختار المدينة", fAddress: "العنوان", fPhone: "رقم الهاتف", fNote: "ملاحظة (اختياري)",
       orderBtn: "أكد الطلب", total: "المجموع", nPay: "الدفع عند الاستلام", nCall: "مكالمة تأكيد", nSwap: "تبديل 7 أيام",
-      dFeat: "المميزات", dShip: "التوصيل والدفع", dShipTxt: "التوصيل ف 24 ساعة للدار البيضاء والرباط ومراكش، و48–72 ساعة لباقي المدن. كتخلص كاش للموزع. التوصيل مجاني ابتداءً من منتجين.",
+      dDesc: "الوصف", noProducts: "المنتجات جايين قريباً.", dFeat: "المميزات", dShip: "التوصيل والدفع", dShipTxt: "التوصيل ف 24 ساعة للدار البيضاء والرباط ومراكش، و48–72 ساعة لباقي المدن. كتخلص كاش للموزع. التوصيل مجاني ابتداءً من منتجين.",
       related: "غادي يعجبك تاني",
       cartEmpty: "السلة خاوية.", continue: "كمل التسوق", viewCart: "شوف السلة", checkout: "إتمام الطلب",
       subtotal: "المجموع الفرعي", shipping: "التوصيل", free: "مجاني", discount: "تخفيض", coupon: "كود التخفيض", apply: "تطبيق",
@@ -123,14 +123,22 @@
       if (s.announcement) CONFIG.announcement = s.announcement;
     }
     const ov = (cfg && cfg.products) || {};
+    const builtinOn = !cfg || cfg.builtin !== false;
     for (const p of ALL_PRODUCTS) {
+      if (!builtinOn) { p.hidden = true; continue; }
       const o = ov[p.id]; if (!o) continue;
       if (Number.isFinite(o.price)) p.price = o.price;
       if (Number.isFinite(o.old)) p.old = o.old;
       p.hidden = !!o.hidden;
       p.stock = Number.isFinite(o.stock) ? o.stock : undefined;
     }
-    PRODUCTS = ALL_PRODUCTS.filter((p) => !p.hidden);
+    // The shop owner's own products, added from the admin: newest first
+    const own = ((cfg && cfg.custom) || []).map((c, i) => ({
+      ...c, colors: c.colors && c.colors.length ? c.colors : [], images: c.images || [], isNew: true,
+      pop: 100000 - i, order: -1e6 + i, rating: 0, reviews: 0, stock: Number.isFinite(c.stock) ? c.stock : undefined,
+    }));
+    for (const c of own) byId[c.id] = c;
+    PRODUCTS = [...own, ...ALL_PRODUCTS.filter((p) => !p.hidden)];
   }
 
   /* ---------- Case art (original SVG drawings) ---------- */
@@ -208,8 +216,11 @@
   }
 
   // Photo mockups (tools/make-mockups.py): iPhone products get a real case photo with the design printed on it.
-  const hasMockup = (p) => p && p.brand === "iphone" && !p.accessory;
+  const hasMockup = (p) => p && !p.custom && p.brand === "iphone" && !p.accessory;
+  const colorName = (p, hex) => (p && p.colorLabels && p.colorLabels[hex] && (p.colorLabels[hex][lang] || p.colorLabels[hex].fr)) || self.WA9I_CATALOG.colorName(hex, lang);
+  const photoOf = (p, i = 0) => `<img class="mock" src="/media/${p.images[i]}" alt="${esc(productTitle(p))}" width="600" height="600" loading="lazy" decoding="async">`;
   function productArt(p, color, opts = {}) {
+    if (p && p.custom) return p.images && p.images.length ? photoOf(p, 0).replace('loading="lazy"', `loading="${opts.eager ? "eager" : "lazy"}"`) : `<span class="no-photo">${esc(L(p.name)).slice(0, 1)}</span>`;
     if (!hasMockup(p) || opts.drawing) return caseSVG(p, color);
     const i = Math.max(0, p.colors.indexOf(color || p.colors[0]));
     return `<img class="mock" src="/assets/mockups/${p.design}-${i}.webp" alt="${esc(productTitle(p))}" width="486" height="540" loading="${opts.eager ? "eager" : "lazy"}" decoding="async">`;
@@ -227,7 +238,7 @@
   function addToCart(id, color, qty = 1, silent) {
     const p = byId[id]; if (!p || p.hidden) return;
     if (p.stock === 0) { toast(t("outStock")); return; }
-    color = color || p.colors[0];
+    color = color || p.colors[0] || "";
     const line = cart.find((l) => l.id === id && l.color === color);
     if (line) line.qty = Math.min(20, line.qty + qty); else cart.push({ id, color, qty });
     saveCart();
@@ -254,14 +265,14 @@
     const off = Math.round((1 - p.price / p.old) * 100);
     return `<article class="card">
       <a class="card-img" href="#/p/${p.id}" tabindex="-1" aria-hidden="true">
-        ${p.badge ? `<span class="badge">${esc(L(p.badge))}</span>` : ""}<span class="badge off">-${off}%</span>
+        ${p.badge ? `<span class="badge">${esc(L(p.badge))}</span>` : ""}${p.old > p.price ? `<span class="badge off">-${off}%</span>` : ""}
         ${productArt(p)}
       </a>
       <div class="card-body">
         <span class="card-model">${esc(p.model || t("accessories"))}</span>
         <a class="card-title" href="#/p/${p.id}">${esc(L(p.name))}</a>
         ${p.colors.length > 1 ? `<span class="swatches">${p.colors.map((c) => `<i style="background:${c}"></i>`).join("")}</span>` : ""}
-        <div class="price"><b>${money(p.price)}</b><s>${money(p.old)}</s></div>
+        <div class="price"><b>${money(p.price)}</b>${p.old > p.price ? `<s>${money(p.old)}</s>` : ""}</div>
         <div class="card-actions">
           <a class="btn btn-primary" href="#/p/${p.id}#order">${t("buy")}</a>
           <button type="button" class="btn btn-ghost add-ic" data-add="${p.id}" aria-label="${t("add")} : ${esc(productTitle(p))}">${ICON.plus}</button>
@@ -323,8 +334,8 @@
   /* ---------- Views ---------- */
   const views = {};
   views.home = () => {
-    const best = [...PRODUCTS].filter((p) => !p.accessory).sort((a, b) => b.pop - a.pop).filter((p, i, arr) => arr.findIndex((q) => q.design === p.design) === i).slice(0, 10);
-    const fresh = PRODUCTS.filter((p) => p.isNew && p.brand !== "accessoires").sort((a, b) => a.order - b.order).filter((p, i, arr) => arr.findIndex((q) => q.design === p.design) === i).slice(0, 5);
+    const best = [...PRODUCTS].filter((p) => !p.accessory).sort((a, b) => b.pop - a.pop).filter((p, i, arr) => arr.findIndex((q) => (q.design || q.id) === (p.design || p.id)) === i).slice(0, 10);
+    const fresh = PRODUCTS.filter((p) => p.isNew && p.brand !== "accessoires").sort((a, b) => a.order - b.order).filter((p, i, arr) => arr.findIndex((q) => (q.design || q.id) === (p.design || p.id)) === i).slice(0, 5);
     const demoP = (design, model, color) => ({ ...byId[`${design}-${slug(model)}`], _c: color });
     const art = (arr) => arr.map((p) => caseSVG(p, p._c)).join("");
     const zbg = `<svg class="zellige-bg" width="100%" height="100%" aria-hidden="true"><defs>${patternDefs("zbg", "zellige", "#0c1f1a")}</defs><rect width="100%" height="100%" fill="url(#zbg)"/></svg>`;
@@ -365,8 +376,8 @@
         <figure><img src="/assets/photos/maroc-fountain.webp" alt="${t("phFountain")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phFountain")}</figcaption></figure>
         <figure class="wide"><img src="/assets/photos/maroc-souk.webp" alt="${t("phSouk")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phSouk")}</figcaption></figure>
       </div></div></div></section>
-    <section class="section"><div class="wrap"><div class="sec-head"><h2>${t("best")}</h2><a href="#/c/iphone">${t("seeAll")} →</a></div>${grid(best)}</div></section>
-    <section class="section"><div class="wrap"><div class="sec-head"><h2>${t("newIn")}</h2><a href="#/c/accessoires">${t("accessories")} →</a></div>${grid(fresh)}</div></section>`;
+    ${best.length ? `<section class="section"><div class="wrap"><div class="sec-head"><h2>${t("best")}</h2><a href="#/c/iphone">${t("seeAll")} →</a></div>${grid(best)}</div></section>` : ""}
+    ${fresh.length ? `<section class="section"><div class="wrap"><div class="sec-head"><h2>${t("newIn")}</h2><a href="#/c/accessoires">${t("accessories")} →</a></div>${grid(fresh)}</div></section>` : ""}`;
   };
 
   function listing({ title, crumb, list, brand, model, coll, q }) {
@@ -418,8 +429,9 @@
   };
 
   views.product = ([id]) => {
-    const p = byId[id]; if (!p) return views.notFound();
+    const p = byId[id]; if (!p || p.hidden) return views.notFound();
     let color = p.colors[0], view = 0;
+    const own = !!p.custom, pics = own ? p.images : [];
     const off = Math.round((1 - p.price / p.old) * 100);
     const b = BRANDS.find((x) => x.id === p.brand);
     const siblings = b ? b.models.map((m) => byId[`${p.design}-${slug(m)}`]).filter(Boolean) : [];
@@ -428,15 +440,16 @@
     return { html: `<div class="wrap">${crumbs(p.model ? [[`#/c/${p.brand}`, brandName(p.brand)], [`#/c/${p.brand}/${p.modelSlug}`, p.model], [null, L(p.name)]] : [[`#/c/accessoires`, t("accessories")], [null, L(p.name)]])}
       <div class="pdp">
         <div class="gallery">
-          <div class="g-main${hasMockup(p) ? " has-photo" : ""}" id="gMain">${productArt(p, color, { eager: true })}</div>
-          ${p.accessory ? "" : `<div class="g-thumbs" id="gThumbs">${[0, 1].map((i) => `<button type="button" aria-pressed="${i === 0}" data-view="${i}" aria-label="Vue ${i + 1}">${i === 0 ? productArt(p, color) : caseSVG(p, color)}</button>`).join("")}</div>`}
+          <div class="g-main${hasMockup(p) || pics.length ? " has-photo" : ""}" id="gMain">${productArt(p, color, { eager: true })}</div>
+          ${own ? (pics.length > 1 ? `<div class="g-thumbs" id="gThumbs">${pics.map((m, i) => `<button type="button" aria-pressed="${i === 0}" data-view="${i}" aria-label="Photo ${i + 1}">${photoOf(p, i)}</button>`).join("")}</div>` : "")
+            : p.accessory ? "" : `<div class="g-thumbs" id="gThumbs">${[0, 1].map((i) => `<button type="button" aria-pressed="${i === 0}" data-view="${i}" aria-label="Vue ${i + 1}">${i === 0 ? productArt(p, color) : caseSVG(p, color)}</button>`).join("")}</div>`}
         </div>
         <div class="pdp-info">
           <span class="card-model">${esc(p.model || t("accessories"))}</span>
           <h1>${esc(productTitle(p))}</h1>
-          <div class="rating"><span class="stars" aria-hidden="true">${stars}</span><span>${p.rating.toFixed(1)} · ${p.reviews} ${t("reviews")}</span></div>
-          <div class="pdp-price"><b>${money(p.price)}</b><s>${money(p.old)}</s><span class="save">-${off}%</span></div>
-          ${p.colors.length > 1 ? `<p class="opt-label">${t("colour")} <span id="colorName">${esc(self.WA9I_CATALOG.colorName(color, lang))}</span></p><div class="colors" id="colors">${p.colors.map((c, i) => `<button type="button" style="background:${c}" aria-pressed="${i === 0}" data-color="${c}" aria-label="${t("colour")} : ${esc(self.WA9I_CATALOG.colorName(c, lang))}" title="${esc(self.WA9I_CATALOG.colorName(c, lang))}"></button>`).join("")}</div>` : ""}
+          ${p.reviews ? `<div class="rating"><span class="stars" aria-hidden="true">${stars}</span><span>${p.rating.toFixed(1)} · ${p.reviews} ${t("reviews")}</span></div>` : ""}
+          <div class="pdp-price"><b>${money(p.price)}</b>${p.old > p.price ? `<s>${money(p.old)}</s><span class="save">-${off}%</span>` : ""}</div>
+          ${p.colors.length > 1 ? `<p class="opt-label">${t("colour")} <span id="colorName">${esc(colorName(p, color))}</span></p><div class="colors" id="colors">${p.colors.map((c, i) => `<button type="button" style="background:${c}" aria-pressed="${i === 0}" data-color="${c}" aria-label="${t("colour")} : ${esc(colorName(p, c))}" title="${esc(colorName(p, c))}"></button>`).join("")}</div>` : ""}
           ${siblings.length > 1 ? `<p class="opt-label">${t("forModel")}</p><div class="models">${siblings.map((s) => `<a href="#/p/${s.id}"${s.id === p.id ? ' aria-current="page"' : ""}>${s.model}</a>`).join("")}</div>` : ""}
           <p class="stock${p.stock === 0 ? " out" : ""}">${p.stock === 0 ? t("outStock") : Number.isFinite(p.stock) && p.stock <= 5 ? t("lowStock", { n: p.stock }) : t("inStock")}</p>
           <div class="buy-row">
@@ -452,7 +465,8 @@
             <div class="cod-note"><span>${t("nPay")}</span><span>${t("nCall")}</span><span>${t("nSwap")}</span></div>
           </form>
           <div class="acc">
-            <details open><summary>${t("dFeat")}</summary><ul>${T[lang].feat.map((f) => `<li>${f}</li>`).join("")}</ul></details>
+            ${own ? (L(p.desc) ? `<details open><summary>${t("dDesc")}</summary>${L(p.desc).split(/\n{2,}/).map((para) => `<p>${esc(para).replace(/\n/g, "<br>")}</p>`).join("")}</details>` : "")
+              : `<details open><summary>${t("dFeat")}</summary><ul>${T[lang].feat.map((f) => `<li>${f}</li>`).join("")}</ul></details>`}
             <details><summary>${t("dShip")}</summary><p>${t("dShipTxt")}</p></details>
           </div>
         </div>
@@ -462,6 +476,12 @@
       after() {
         const main = $("#gMain"), qtyEl = $("#qty");
         const paint = () => {
+          if (own) {
+            if (!pics.length) return;
+            main.innerHTML = photoOf(p, view).replace('loading="lazy"', 'loading="eager"');
+            $$("#gThumbs button").forEach((b2, i) => b2.setAttribute("aria-pressed", i === view));
+            return;
+          }
           const photo = hasMockup(p) && view === 0;
           main.innerHTML = photo ? productArt(p, color, { eager: true }) : caseSVG(p, color);
           main.classList.toggle("has-photo", photo); main.classList.toggle("side-v", view === 1 && !hasMockup(p));
@@ -469,11 +489,12 @@
         };
         const qty = () => Math.max(1, Math.min(20, parseInt(qtyEl.value, 10) || 1));
         const sum = () => { const q = qty(); const ship = shippingCost(q); $("#codTotal").textContent = money(p.price * q + ship); $("#codShip").textContent = `(${t("shipping")} : ${ship ? money(ship) : t("free")})`; };
-        $$("#colors button").forEach((btn) => btn.addEventListener("click", () => { color = btn.dataset.color; $$("#colors button").forEach((x) => x.setAttribute("aria-pressed", x === btn)); const cn = $("#colorName"); if (cn) cn.textContent = self.WA9I_CATALOG.colorName(color, lang); paint(); }));
+        $$("#colors button").forEach((btn) => btn.addEventListener("click", () => { color = btn.dataset.color; $$("#colors button").forEach((x) => x.setAttribute("aria-pressed", x === btn)); const cn = $("#colorName"); if (cn) cn.textContent = colorName(p, color); paint(); }));
         $$("#gThumbs button").forEach((btn) => btn.addEventListener("click", () => { view = +btn.dataset.view; paint(); }));
         $$("[data-q]").forEach((btn) => btn.addEventListener("click", () => { qtyEl.value = Math.max(1, Math.min(20, qty() + +btn.dataset.q)); sum(); }));
         qtyEl.addEventListener("input", sum);
         $("#addBtn").addEventListener("click", () => addToCart(p.id, color, qty()));
+        if (p.stock === 0) { $("#addBtn").disabled = true; $("#order [type=submit]").disabled = true; }
         $("#order").addEventListener("submit", (e) => { e.preventDefault(); placeOrder(e.target, [{ id: p.id, color, qty: qty() }]); });
         sum();
       } };
