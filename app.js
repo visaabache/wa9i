@@ -48,6 +48,20 @@
       tQuality: "Qualité contrôlée", tQualityS: "Chaque coque vérifiée avant l’envoi", zoom: "Agrandir la photo", photoN: "Photo {i} sur {n}", close: "Fermer", prev: "Précédent", next: "Suivant",
       dCompat: "Compatibilité", compatTxt: "Conçue pour l’{m} : découpes exactes pour les caméras, les boutons et le port de charge. Vérifiez votre modèle dans Réglages → Général → Informations.",
       dReturns: "Échanges & garantie", dReturnsTxt: "Mauvais modèle ou défaut ? Vous avez 7 jours pour l’échanger, gratuitement, si la coque n’a pas été utilisée. Écrivez-nous sur WhatsApp avec votre numéro de commande.",
+      findCase: "Trouver ma coque", stModels: "modèles de téléphones", stDelivery: "livraison partout au Maroc", stOnline: "à payer en ligne",
+      mq1: "Paiement à la livraison", mq2: "Livraison offerte dès 2 coques", mq3: "Échange sous 7 jours", mq4: "Motifs inspirés du Maroc", mq5: "Conseil sur WhatsApp 7j/7",
+      finderK: "Trouvez votre coque", finderT: "Quel téléphone avez-vous ?", finderP: "Choisissez votre marque et votre modèle : on vous montre seulement les coques qui lui vont parfaitement.",
+      finderBrand: "Marque", finderModel: "Modèle", finderChoose: "Choisissez une marque", finderModelFirst: "Choisissez d’abord la marque", finderAll: "Tous les modèles", finderGo: "Voir les coques",
+      brandsK: "Par marque", accSmall: "Chargeurs, câbles…", collK: "Collections", collTag: "La plus aimée",
+      howK: "Simple et sans risque", howT: "Comment ça marche", how1: "Choisissez", how1p: "Votre modèle, votre motif, votre couleur.", how2: "Commandez en 30 s", how2p: "Nom, ville, adresse, téléphone. Aucune carte bancaire.",
+      how3: "On confirme et on livre", how3p: "Un appel ou un WhatsApp pour confirmer, puis livraison en 24 à 72 h.", how4: "Payez à la réception", how4p: "En espèces au livreur, après avoir vu votre coque.",
+      faqK: "Questions fréquentes", faqT: "Vous avez une question ?", faqP: "Les réponses aux questions qu’on nous pose le plus. Pour le reste, on répond sur WhatsApp.",
+      q1: "Comment se passe le paiement ?", a1: "Vous payez en espèces au livreur, à la réception du colis. Il n’y a aucun paiement en ligne.",
+      q2: "En combien de temps je reçois ma commande ?", a2: "24 h à Casablanca, Rabat et Marrakech, 48 à 72 h dans les autres villes, après la confirmation de la commande.",
+      q3: "Combien coûte la livraison ?", a3: "La livraison est offerte dès 2 coques. Pour une seule coque, le prix de la livraison s’affiche avant de confirmer.",
+      q4: "Et si je me trompe de modèle ?", a4: "Vous avez 7 jours pour échanger la coque si elle n’a pas été utilisée. Écrivez-nous sur WhatsApp avec votre numéro de commande.",
+      q5: "Comment savoir quel est mon modèle ?", a5: "Sur iPhone : Réglages → Général → Informations. Sur Android : Paramètres → À propos du téléphone. Le nom du modèle y est écrit.",
+      waBandT: "Besoin d’un conseil ?", waBandP: "Envoyez-nous le nom de votre téléphone, on vous propose les coques qui lui vont. On répond tous les jours.", waBandCta: "Écrire sur WhatsApp", waBandMsg: "Salam Wa9i, je cherche une coque pour mon téléphone :",
       dDesc: "Description", noProducts: "Les produits arrivent bientôt.", dFeat: "Caractéristiques", dShip: "Livraison & paiement", dShipTxt: "Livraison en 24 h à Casablanca, Rabat et Marrakech, 48–72 h ailleurs. Vous payez en espèces au livreur. Livraison offerte dès 2 articles.",
       related: "Vous aimerez aussi",
       cartEmpty: "Votre panier est vide.", continue: "Continuer mes achats", viewCart: "Voir le panier", checkout: "Passer la commande",
@@ -92,6 +106,20 @@
       tQuality: "جودة مضمونة", tQualityS: "كل كوك كيتشاف قبل ما يتصيفط", zoom: "كبر الصورة", photoN: "صورة {i} من {n}", close: "إغلاق", prev: "السابق", next: "التالي",
       dCompat: "التوافق", compatTxt: "مصممة ل{m}: فتحات مضبوطة للكاميرات والأزرار ومدخل الشحن. تأكد من الموديل ديالك فالإعدادات ← عام ← حول.",
       dReturns: "التبديل والضمان", dReturnsTxt: "موديل غالط ولا فيه عيب؟ عندك 7 أيام باش تبدلو مجاناً إلا ما استعملتيهش. كتب لينا على واتساب مع رقم الطلب.",
+      findCase: "لقا الكوك ديالي", stModels: "موديل ديال التيليفونات", stDelivery: "توصيل لجميع المدن", stOnline: "دفع أونلاين",
+      mq1: "الدفع عند الاستلام", mq2: "التوصيل مجاني ابتداءً من كوكتين", mq3: "تبديل خلال 7 أيام", mq4: "نقوش مستوحاة من المغرب", mq5: "نصيحة على واتساب 7/7",
+      finderK: "لقا الكوك ديالك", finderT: "شنو هو التيليفون ديالك؟", finderP: "اختار الماركة والموديل: غادي نوريوك غير الكوكات اللي كيجيو معاه بالضبط.",
+      finderBrand: "الماركة", finderModel: "الموديل", finderChoose: "اختار ماركة", finderModelFirst: "اختار الماركة الأول", finderAll: "جميع الموديلات", finderGo: "شوف الكوكات",
+      brandsK: "حسب الماركة", accSmall: "شواحن، كابلات…", collK: "المجموعات", collTag: "الأكثر حباً",
+      howK: "ساهل وبلا مخاطرة", howT: "كيفاش كتخدم", how1: "اختار", how1p: "الموديل، النقشة، واللون.", how2: "اطلب ف 30 ثانية", how2p: "الاسم، المدينة، العنوان، الهاتف. بلا بطاقة بنكية.",
+      how3: "كنأكدو وكنوصلو", how3p: "مكالمة ولا واتساب للتأكيد، ومن بعد التوصيل ف 24 حتى 72 ساعة.", how4: "خلص ملي توصلك", how4p: "كاش للموزع، من بعد ما تشوف الكوك ديالك.",
+      faqK: "أسئلة متكررة", faqT: "عندك سؤال؟", faqP: "الأجوبة على الأسئلة اللي كتسولونا بزاف. والباقي كنجاوبو على واتساب.",
+      q1: "كيفاش كيتم الدفع؟", a1: "كتخلص كاش للموزع ملي كيوصلك الكولي. ما كاين حتى دفع أونلاين.",
+      q2: "شحال كياخد التوصيل؟", a2: "24 ساعة للدار البيضاء والرباط ومراكش، و48 حتى 72 ساعة لباقي المدن، من بعد تأكيد الطلب.",
+      q3: "شحال ثمن التوصيل؟", a3: "التوصيل مجاني ابتداءً من كوكتين. لكوك واحد، ثمن التوصيل كيبان قبل ما تأكد.",
+      q4: "وإلا غلطت فالموديل؟", a4: "عندك 7 أيام باش تبدل الكوك إلا ما استعملتيهش. كتب لينا على واتساب مع رقم الطلب.",
+      q5: "كيفاش نعرف الموديل ديالي؟", a5: "فآيفون: الإعدادات ← عام ← حول. فأندرويد: الإعدادات ← حول الهاتف. سمية الموديل مكتوبة تما.",
+      waBandT: "محتاج نصيحة؟", waBandP: "صيفط لينا سمية التيليفون ديالك، ونقترحو عليك الكوكات اللي كيجيو معاه. كنجاوبو كل نهار.", waBandCta: "كتب لينا على واتساب", waBandMsg: "السلام Wa9i، كنقلب على كوك للتيليفون ديالي:",
       dDesc: "الوصف", noProducts: "المنتجات جايين قريباً.", dFeat: "المميزات", dShip: "التوصيل والدفع", dShipTxt: "التوصيل ف 24 ساعة للدار البيضاء والرباط ومراكش، و48–72 ساعة لباقي المدن. كتخلص كاش للموزع. التوصيل مجاني ابتداءً من منتجين.",
       related: "غادي يعجبك تاني",
       cartEmpty: "السلة خاوية.", continue: "كمل التسوق", viewCart: "شوف السلة", checkout: "إتمام الطلب",
@@ -345,40 +373,65 @@
   const views = {};
   views.home = () => {
     const best = [...PRODUCTS].filter((p) => !p.accessory).sort((a, b) => b.pop - a.pop).filter((p, i, arr) => arr.findIndex((q) => (q.design || q.id) === (p.design || p.id)) === i).slice(0, 10);
-    const fresh = PRODUCTS.filter((p) => p.isNew && p.brand !== "accessoires").sort((a, b) => a.order - b.order).filter((p, i, arr) => arr.findIndex((q) => (q.design || q.id) === (p.design || p.id)) === i).slice(0, 5);
+    const fresh = PRODUCTS.filter((p) => p.isNew && p.brand !== "accessoires").sort((a, b) => a.order - b.order).filter((p, i, arr) => arr.findIndex((q) => (q.design || q.id) === (p.design || p.id)) === i).slice(0, 10);
     const demoP = (design, model, color) => ({ ...byId[`${design}-${slug(model)}`], _c: color });
     const art = (arr) => arr.map((p) => caseSVG(p, p._c)).join("");
     const zbg = `<svg class="zellige-bg" width="100%" height="100%" aria-hidden="true"><defs>${patternDefs("zbg", "zellige", "#0c1f1a")}</defs><rect width="100%" height="100%" fill="url(#zbg)"/></svg>`;
+    const modelCount = BRANDS.reduce((a, b) => a + b.models.length, 0);
+    const SVG = {
+      search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`,
+      arrow: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
+      phone: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="3"/><circle cx="10.5" cy="6" r="1.2"/></svg>`,
+      form: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>`,
+      wa: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>`,
+      star: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.6 5.8 6.4.7-4.8 4.3 1.4 6.2L12 15.8 6.4 19l1.4-6.2L3 8.5l6.4-.7z"/></svg>`,
+    };
+    const shelf = (title, list, link, linkLabel) => list.length ? `<section class="section reveal"><div class="wrap"><div class="sec-head"><div><h2>${title}</h2></div><div class="shelf-nav"><a href="${link}">${linkLabel} →</a><button type="button" class="icon-btn" data-shelf="-1" aria-label="${t("prev")}">‹</button><button type="button" class="icon-btn" data-shelf="1" aria-label="${t("next")}">›</button></div></div><div class="shelf">${list.map(card).join("")}</div></div></section>` : "";
+    const marquee = [t("mq1"), t("mq2"), t("mq3"), t("mq4"), t("mq5")];
     return `<section class="hero"><div class="wrap">
       <div class="slider" id="slider" aria-roledescription="carrousel">
-        <div class="slide s1 on" aria-roledescription="diapositive"><img class="slide-bg" src="/assets/photos/hero-maroc.webp" alt="" width="1400" height="760" decoding="async">${zbg}<div><span class="slide-kicker">${t("s1k")}</span><h1>${t("s1t")}</h1><p>${t("s1p")}</p><a class="btn btn-gold" href="#/collection/zellige">${t("shopNow")}</a></div>
+        <div class="slide s1 on" aria-roledescription="diapositive"><img class="slide-bg" src="/assets/photos/hero-maroc.webp" alt="" width="1400" height="760" decoding="async">${zbg}<div><span class="slide-kicker">${t("s1k")}</span><h1>${t("s1t")}</h1><p>${t("s1p")}</p><div class="hero-ctas"><a class="btn btn-gold" href="#/collection/zellige">${t("shopNow")}</a><a class="btn btn-glass" href="#finder">${t("findCase")}</a></div></div>
           <div class="slide-art">${art([demoP("najma", "iPhone 17 Pro", "#b91c1c"), demoP("zellige", "iPhone 18 Pro Max", "#0e7a5f"), demoP("amazigh", "Galaxy S26 Ultra", "#f2b33d")])}</div></div>
-        <div class="slide s2" aria-roledescription="diapositive"><div><span class="slide-kicker">${t("s2k")}</span><h2>${t("s2t")}</h2><p>${t("s2p")}</p><a class="btn btn-gold" href="#/collection/clear">${t("shopNow")}</a></div>
+        <div class="slide s2" aria-roledescription="diapositive"><div><span class="slide-kicker">${t("s2k")}</span><h2>${t("s2t")}</h2><p>${t("s2p")}</p><div class="hero-ctas"><a class="btn btn-gold" href="#/collection/clear">${t("shopNow")}</a><a class="btn btn-glass" href="#finder">${t("findCase")}</a></div></div>
           <div class="slide-photo"><img src="/assets/photos/hero-magsafe.webp" alt="${t("cT")}" width="760" height="760" loading="lazy" decoding="async"></div></div>
-        <div class="slide s3" aria-roledescription="diapositive"><div><span class="slide-kicker">${t("s3k")}</span><h2>${t("s3t")}</h2><p>${t("s3p")}</p><a class="btn btn-gold" href="#/collection/cuir">${t("shopNow")}</a></div>
-          <div class="slide-photo"><img src="/assets/photos/hero-cuir.webp" alt="${t("cC")}" width="760" height="760" loading="lazy" decoding="async"></div></div>
-        <div class="dots" role="tablist">${[0, 1, 2].map((i) => `<button type="button" aria-label="${i + 1}" aria-current="${i === 0}" data-dot="${i}"></button>`).join("")}</div>
-      </div>
-      <div class="trust">
-        <div>${ICON.cash}<p><b>${t("tr1")}</b><span>${t("tr1s")}</span></p></div>
-        <div>${ICON.truck}<p><b>${t("tr2")}</b><span>${t("tr2s")}</span></p></div>
-        <div>${ICON.swap}<p><b>${t("tr3")}</b><span>${t("tr3s")}</span></p></div>
-        <div>${ICON.chat}<p><b>${t("tr4")}</b><span>${t("tr4s")}</span></p></div>
-      </div></div></section>
-    <section class="section"><div class="wrap">
-      <div class="sec-head"><h2>${t("byBrand")}</h2></div>
-      <div class="brands">${BRANDS.map((b) => `<a class="brand-tile" href="#/c/${b.id}"><span class="bt-photo"><img src="/assets/photos/brand-${b.id}.webp" alt="" width="360" height="360" loading="lazy" decoding="async"></span><b>${b.name}</b><small>${b.models.length} ${t("models")}</small></a>`).join("")}<a class="brand-tile" href="#/c/accessoires"><span class="bt-photo"><img src="/assets/photos/coll-clear.webp" alt="" width="360" height="360" loading="lazy" decoding="async"></span><b>${t("accessories")}</b><small>${ACCESSORIES.length} ${t("products")}</small></a></div>
-    </div></section>
-    <section class="section"><div class="wrap">
-      <div class="sec-head"><h2>${t("collections")}</h2></div>
-      <div class="collections">
-        <a class="coll coll-zellige" href="#/collection/zellige"><img class="coll-img" src="/assets/photos/coll-zellige.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cZ")}</b><span>${t("cZs")}</span></a>
-        <a class="coll coll-cuir" href="#/collection/cuir"><img class="coll-img" src="/assets/photos/coll-cuir.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cC")}</b><span>${t("cCs")}</span></a>
-        <a class="coll coll-clear" href="#/collection/clear"><img class="coll-img" src="/assets/photos/coll-clear.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cT")}</b><span>${t("cTs")}</span></a>
-        <a class="coll coll-armor" href="#/collection/armor"><img class="coll-img" src="/assets/photos/coll-armor.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cA")}</b><span>${t("cAs")}</span></a>
+        <div class="slide s3" aria-roledescription="diapositive"><div><span class="slide-kicker">${t("s3k")}</span><h2>${t("s3t")}</h2><p>${t("s3p")}</p><div class="hero-ctas"><a class="btn btn-gold" href="#/collection/cuir">${t("shopNow")}</a><a class="btn btn-glass" href="#finder">${t("findCase")}</a></div></div>
+          <div class="slide-photo"><img src="/assets/mockups/leather-0.webp" alt="${t("cC")}" width="486" height="540" loading="lazy" decoding="async"></div></div>
+        <div class="dots" role="tablist">${[0, 1, 2].map((i) => `<button type="button" aria-label="${i + 1}" aria-current="${i === 0}" data-dot="${i}"><i></i></button>`).join("")}</div>
+        <div class="hero-stats"><span><b>${modelCount}+</b>${t("stModels")}</span><span><b>24–72 h</b>${t("stDelivery")}</span><span><b>0 DH</b>${t("stOnline")}</span></div>
       </div>
     </div></section>
-    <section class="section"><div class="wrap"><div class="inspire">
+    <div class="marquee" aria-hidden="true"><div class="marquee-track">${[...marquee, ...marquee].map((m) => `<span>${SVG.star}${m}</span>`).join("")}</div></div>
+    <section class="section reveal" id="finder"><div class="wrap"><form class="finder" id="finderForm">
+      <div class="finder-txt"><span class="slide-kicker">${t("finderK")}</span><h2>${t("finderT")}</h2><p>${t("finderP")}</p></div>
+      <div class="finder-fields">
+        <label><span>${t("finderBrand")}</span><select id="fBrand"><option value="">${t("finderChoose")}</option>${BRANDS.map((b) => `<option value="${b.id}">${b.name}</option>`).join("")}</select></label>
+        <label><span>${t("finderModel")}</span><select id="fModel" disabled><option value="">${t("finderModelFirst")}</option></select></label>
+        <button class="btn btn-gold" type="submit">${SVG.search}${t("finderGo")}</button>
+      </div></form></div></section>
+    <section class="section reveal"><div class="wrap">
+      <div class="sec-head"><div><span class="kicker">${t("brandsK")}</span><h2>${t("byBrand")}</h2></div></div>
+      <div class="brands">${BRANDS.map((b) => `<a class="brand-tile" href="#/c/${b.id}"><span class="bt-photo"><img src="/assets/photos/brand-${b.id}.webp" alt="" width="360" height="360" loading="lazy" decoding="async"></span><b>${b.name}</b><small>${b.models.length} ${t("models")}</small></a>`).join("")}<a class="brand-tile" href="#/c/accessoires"><span class="bt-photo"><img src="/assets/photos/coll-clear.webp" alt="" width="360" height="360" loading="lazy" decoding="async"></span><b>${t("accessories")}</b><small>${t("accSmall")}</small></a></div>
+    </div></section>
+    <section class="section reveal"><div class="wrap">
+      <div class="sec-head"><div><span class="kicker">${t("collK")}</span><h2>${t("collections")}</h2></div></div>
+      <div class="bento">
+        <a class="coll big" href="#/collection/zellige"><img class="coll-img" src="/assets/photos/coll-zellige.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><span class="coll-tag">${t("collTag")}</span><b>${t("cZ")}</b><span>${t("cZs")}</span><em class="coll-go">${t("shopNow")} ${SVG.arrow}</em></a>
+        <a class="coll" href="#/collection/cuir"><img class="coll-img" src="/assets/photos/coll-cuir.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cC")}</b><span>${t("cCs")}</span><em class="coll-go">${SVG.arrow}</em></a>
+        <a class="coll" href="#/collection/clear"><img class="coll-img" src="/assets/photos/coll-clear.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cT")}</b><span>${t("cTs")}</span><em class="coll-go">${SVG.arrow}</em></a>
+        <a class="coll wide" href="#/collection/armor"><img class="coll-img" src="/assets/photos/coll-armor.webp" alt="" width="560" height="640" loading="lazy" decoding="async"><b>${t("cA")}</b><span>${t("cAs")}</span><em class="coll-go">${SVG.arrow}</em></a>
+      </div>
+    </div></section>
+    ${shelf(t("newIn"), fresh, "#/c/iphone", t("seeAll"))}
+    <section class="section reveal"><div class="wrap"><div class="steps">
+      <div class="steps-head"><span class="kicker">${t("howK")}</span><h2>${t("howT")}</h2></div>
+      <ol>
+        <li><span class="step-ic">${SVG.phone}</span><b>${t("how1")}</b><p>${t("how1p")}</p></li>
+        <li><span class="step-ic">${SVG.form}</span><b>${t("how2")}</b><p>${t("how2p")}</p></li>
+        <li><span class="step-ic">${ICON.truck}</span><b>${t("how3")}</b><p>${t("how3p")}</p></li>
+        <li><span class="step-ic">${ICON.cash}</span><b>${t("how4")}</b><p>${t("how4p")}</p></li>
+      </ol></div></div></section>
+    ${shelf(t("best"), best, "#/c/iphone", t("seeAll"))}
+    <section class="section reveal"><div class="wrap"><div class="inspire">
       <div class="inspire-txt"><span class="slide-kicker">${t("insK")}</span><h2>${t("insT")}</h2><p>${t("insP")}</p><a class="btn btn-gold" href="#/collection/zellige">${t("insCta")}</a></div>
       <div class="inspire-grid">
         <figure class="tall"><img src="/assets/photos/maroc-koutoubia.webp" alt="${t("phKoutoubia")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phKoutoubia")}</figcaption></figure>
@@ -386,9 +439,42 @@
         <figure><img src="/assets/photos/maroc-fountain.webp" alt="${t("phFountain")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phFountain")}</figcaption></figure>
         <figure class="wide"><img src="/assets/photos/maroc-souk.webp" alt="${t("phSouk")}" width="640" height="800" loading="lazy" decoding="async"><figcaption>${t("phSouk")}</figcaption></figure>
       </div></div></div></section>
-    ${best.length ? `<section class="section"><div class="wrap"><div class="sec-head"><h2>${t("best")}</h2><a href="#/c/iphone">${t("seeAll")} →</a></div>${grid(best)}</div></section>` : ""}
-    ${fresh.length ? `<section class="section"><div class="wrap"><div class="sec-head"><h2>${t("newIn")}</h2><a href="#/c/accessoires">${t("accessories")} →</a></div>${grid(fresh)}</div></section>` : ""}`;
+    <section class="section reveal"><div class="wrap"><div class="trust">
+        <div>${ICON.cash}<p><b>${t("tr1")}</b><span>${t("tr1s")}</span></p></div>
+        <div>${ICON.truck}<p><b>${t("tr2")}</b><span>${t("tr2s")}</span></p></div>
+        <div>${ICON.swap}<p><b>${t("tr3")}</b><span>${t("tr3s")}</span></p></div>
+        <div>${ICON.chat}<p><b>${t("tr4")}</b><span>${t("tr4s")}</span></p></div>
+    </div></div></section>
+    <section class="section reveal"><div class="wrap faq-wrap">
+      <div><span class="kicker">${t("faqK")}</span><h2 class="faq-title">${t("faqT")}</h2><p class="muted-p">${t("faqP")}</p><a class="btn btn-ghost" href="#/contact">${t("contact")}</a></div>
+      <div class="faq">${[1, 2, 3, 4, 5].map((n) => `<details${n === 1 ? " open" : ""}><summary>${t("q" + n)}</summary><p>${t("a" + n)}</p></details>`).join("")}</div>
+    </div></section>
+    <section class="section reveal"><div class="wrap"><div class="wa-band">
+      <div class="wa-ic">${SVG.wa}</div>
+      <div class="grow"><h2>${t("waBandT")}</h2><p>${t("waBandP")}</p></div>
+      <a class="btn btn-wa" href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t("waBandMsg"))}" target="_blank" rel="noopener">${SVG.wa}${t("waBandCta")}</a>
+    </div></div></section>`;
   };
+  function bindHome() {
+    // Model finder
+    const fb = $("#fBrand"), fm = $("#fModel");
+    if (fb) {
+      fb.addEventListener("change", () => {
+        const b = BRANDS.find((x) => x.id === fb.value);
+        fm.disabled = !b;
+        fm.innerHTML = b ? `<option value="">${t("finderAll")}</option>` + b.models.map((m) => `<option value="${slug(m)}">${m}</option>`).join("") : `<option value="">${t("finderModelFirst")}</option>`;
+      });
+      $("#finderForm").addEventListener("submit", (e) => { e.preventDefault(); if (!fb.value) { fb.focus(); return; } location.hash = `#/c/${fb.value}${fm.value ? "/" + fm.value : ""}`; });
+    }
+    $$('a[href="#finder"]').forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); $("#finder").scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => fb && fb.focus({ preventScroll: true }), 500); }));
+    // Product shelves
+    $$("[data-shelf]").forEach((btn) => btn.addEventListener("click", () => { const tr = btn.closest(".section").querySelector(".shelf"); tr.scrollBy({ left: (document.dir === "rtl" ? -1 : 1) * +btn.dataset.shelf * tr.clientWidth * 0.8, behavior: "smooth" }); }));
+    // Reveal on scroll
+    const els = $$(".reveal");
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) { els.forEach((el) => el.classList.add("in")); return; }
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+    els.forEach((el) => io.observe(el));
+  }
 
   function listing({ title, crumb, list, brand, model, coll, q }) {
     const sort = store.get("sort", "pop");
@@ -666,7 +752,7 @@
   views.contact = () => `<div class="wrap">${crumbs([[null, t("contact")]])}<div class="banner"><img src="/assets/photos/contact-cases.webp" alt="" width="1000" height="560" decoding="async"><h1 class="page-title">${t("ctTitle")}</h1></div>
     <div class="contact"><div class="box"><p>${t("ctTxt")}</p><a class="btn btn-primary" href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Salam Wa9i")}" target="_blank" rel="noopener">${t("ctWa")}</a></div>
     <div class="box"><dl><div><dt>${t("ctHours")}</dt><dd>${t("ctHoursV")}</dd></div><div><dt>${t("ctDel")}</dt><dd>${t("ctDelV")}</dd></div><div><dt>${t("ctSwap")}</dt><dd>${t("ctSwapV")}</dd></div></dl></div></div></div>`;
-  const PHOTO_CREDITS = [["brand-iphone","1763891378295-5d9bd5c48745"],["brand-samsung","1772182092777-6b1bf0a362fe"],["brand-xiaomi","1655356392708-c675781f1748"],["brand-google","1760597371617-5c0652f58178"],["brand-huawei","1546706887-a24528987a75"],["brand-oppo","1779002999469-8f0a40b588c4"],["brand-honor","1760708368766-1d36cd72591e"],["brand-infinix","1696877983046-7429e0a6a8f5"],["hero-maroc","1771148886150-fe1784951a68"],["hero-magsafe","1692780256774-198bc0a3bbf0"],["hero-cuir","1760443728263-e77345f61eb8"],["coll-zellige","1762380368368-dc3fe398be04"],["coll-clear","1775544265981-9db0ea58687f"],["coll-cuir","1711033312367-247626a984d1"],["coll-armor","1623393937972-4b3102ba8c23"],["maroc-koutoubia","1597212618440-806262de4f6b"],["maroc-medersa","1778752780920-3f8bc84114b4"],["maroc-fountain","1539020140153-e479b8c22e70"],["maroc-souk","1580746738099-1cb74f972feb"],["contact-cases","1535157412991-2ef801c1748b"]];
+  const PHOTO_CREDITS = [["brand-iphone","1763891378295-5d9bd5c48745"],["brand-samsung","1772182092777-6b1bf0a362fe"],["brand-xiaomi","1655356392708-c675781f1748"],["brand-google","1760597371617-5c0652f58178"],["brand-huawei","1546706887-a24528987a75"],["brand-oppo","1779002999469-8f0a40b588c4"],["brand-honor","1760708368766-1d36cd72591e"],["brand-infinix","1696877983046-7429e0a6a8f5"],["hero-maroc","1771148886150-fe1784951a68"],["hero-magsafe","1692780256774-198bc0a3bbf0"],["coll-zellige","1762380368368-dc3fe398be04"],["coll-clear","1775544265981-9db0ea58687f"],["coll-cuir","1711033312367-247626a984d1"],["coll-armor","1623393937972-4b3102ba8c23"],["maroc-koutoubia","1597212618440-806262de4f6b"],["maroc-medersa","1778752780920-3f8bc84114b4"],["maroc-fountain","1539020140153-e479b8c22e70"],["maroc-souk","1580746738099-1cb74f972feb"],["contact-cases","1535157412991-2ef801c1748b"]];
   views.credits = () => `<div class="wrap">${crumbs([[null, t("credits")]])}<h1 class="page-title">${t("credits")}</h1><p class="lead">${t("creditsTxt")}</p>
     <div class="credits">${PHOTO_CREDITS.map(([f, id]) => `<a class="credit-item" href="https://unsplash.com/photos/${id.split("-").pop()}" target="_blank" rel="noopener"><img src="/assets/photos/${f}.webp" alt="" loading="lazy" width="320" height="320"><span>${t("creditsOpen")} ↗</span></a>`).join("")}</div></div>`;
   views.notFound = () => `<div class="wrap"><div class="empty" style="margin:40px 0"><p><b>${t("notFound")}</b></p><a class="btn btn-primary" href="#/">${t("continue")}</a></div></div>`;
@@ -699,16 +785,28 @@
     view.after?.();
     $$("[data-add]", main).forEach((b) => b.addEventListener("click", () => addToCart(b.dataset.add)));
     $$(".nav-link").forEach((a) => a.classList.toggle("active", a.dataset.brand === active));
-    if (name === "home") startSlider();
+    if (name === "home") { startSlider(); bindHome(); }
     const titleBits = { home: "Coques & accessoires téléphone", cart: t("cart"), checkout: t("checkout"), contact: t("contact") };
     document.title = `Wa9i — ${titleBits[name] || ($("h1", main)?.textContent || "").trim() || "Wa9i"}`;
     if (location.hash.endsWith("#order")) $("#order")?.scrollIntoView({ block: "start" }); else window.scrollTo(0, 0);
   }
   function startSlider() {
-    const slides = $$(".slide"), dots = $$("[data-dot]"); let i = 0;
-    const go = (n) => { i = (n + slides.length) % slides.length; slides.forEach((s, k) => s.classList.toggle("on", k === i)); dots.forEach((d, k) => d.setAttribute("aria-current", k === i)); };
-    dots.forEach((d) => d.addEventListener("click", () => { go(+d.dataset.dot); clearInterval(sliderTimer); }));
-    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) sliderTimer = setInterval(() => go(i + 1), 5500);
+    const slider = $("#slider"), slides = $$(".slide"), dots = $$("[data-dot]"); let i = 0, paused = false;
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const go = (n) => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle("on", k === i));
+      dots.forEach((d, k) => { d.setAttribute("aria-current", k === i); d.classList.remove("run"); });
+      if (!still) { void dots[i].offsetWidth; dots[i].classList.add("run"); }
+    };
+    const start = () => { clearInterval(sliderTimer); if (!still) sliderTimer = setInterval(() => { if (!paused) go(i + 1); }, 6000); };
+    dots.forEach((d) => d.addEventListener("click", () => { go(+d.dataset.dot); start(); }));
+    slider.addEventListener("mouseenter", () => { paused = true; slider.classList.add("paused"); });
+    slider.addEventListener("mouseleave", () => { paused = false; slider.classList.remove("paused"); });
+    let x0 = null;
+    slider.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener("touchend", (e) => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) { go(i + ((dx < 0) !== (document.dir === "rtl") ? 1 : -1)); start(); } x0 = null; });
+    go(0); start();
   }
 
   /* ---------- Chrome: nav, drawers, language ---------- */

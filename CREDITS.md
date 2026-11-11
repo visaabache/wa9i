@@ -8,7 +8,6 @@ Photos were picked without visible brand logos, except the brand tiles (`brand-*
 | --- | --- |
 | `assets/photos/hero-maroc.webp` | [Unsplash](https://images.unsplash.com/photo-1771148886150-fe1784951a68) |
 | `assets/photos/hero-magsafe.webp` | [Unsplash](https://images.unsplash.com/photo-1692780256774-198bc0a3bbf0) |
-| `assets/photos/hero-cuir.webp` | [Unsplash](https://images.unsplash.com/photo-1760443728263-e77345f61eb8) |
 | `assets/photos/coll-zellige.webp` | [Unsplash](https://images.unsplash.com/photo-1762380368368-dc3fe398be04) |
 | `assets/photos/coll-clear.webp` | [Unsplash](https://images.unsplash.com/photo-1775544265981-9db0ea58687f) |
 | `assets/photos/coll-cuir.webp` | [Unsplash](https://images.unsplash.com/photo-1711033312367-247626a984d1) |
@@ -29,3 +28,4 @@ Photos were picked without visible brand logos, except the brand tiles (`brand-*
 | `tools/mockup-base.jpg` (base of every `assets/mockups/*.webp`) | [Unsplash](https://images.unsplash.com/photo-1760443728263-e77345f61eb8) |
 
 The product mockups in `assets/mockups/` are that photo with the Wa9i designs printed onto the case by `tools/make-mockups.py`.
+
